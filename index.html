@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="女性 DU–BOO 尿動力學連結生物樣本庫：互動式採檢、cryobox、檢測、預算與 study power 規劃器。">
+  <title>DU–BOO Study Planner</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__eyebrow">Urodynamics-linked prospective biobank</div>
+    <div class="hero__content">
+      <div>
+        <h1>女性 DU–BOO 分子表型研究規劃器</h1>
+        <p>把採檢 SOP、cryobox、分期檢測、研究效能與預算放在同一張可調整的心智圖。</p>
+      </div>
+      <div class="hero__badge" aria-label="目前版本">Protocol v1.0<br><span>2026-07-31</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="control-panel" aria-labelledby="controls-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">Study assumptions</p>
+          <h2 id="controls-title">先設定這次要算的規模</h2>
+        </div>
+        <div class="preset-buttons" role="group" aria-label="研究版本快速設定">
+          <button type="button" class="preset active" data-preset="complete">完整探索版</button>
+          <button type="button" class="preset" data-preset="pilot">第一期核心版</button>
+          <button type="button" class="preset" data-preset="biobank">只建樣本庫</button>
+        </div>
+      </div>
+
+      <div class="input-grid">
+        <label>預計建立樣本庫人數
+          <input id="biobank-n" type="number" min="1" max="500" step="1" value="60">
+          <small>所有接受 PFS 且同意研究者</small>
+        </label>
+        <label>Pure DU 分析人數
+          <input id="du-n" type="number" min="2" max="250" step="1" value="15">
+          <small>UDS 後 adjudication</small>
+        </label>
+        <label>Pure BOO 分析人數
+          <input id="boo-n" type="number" min="2" max="250" step="1" value="15">
+          <small>UDS 後 adjudication</small>
+        </label>
+        <label>預期 Cohen's d
+          <input id="effect-size" type="number" min="0.05" max="3" step="0.05" value="1.06">
+          <small>pilot 預設 large effect</small>
+        </label>
+        <label>雙側 α
+          <input id="alpha" type="number" min="0.001" max="0.2" step="0.001" value="0.05">
+          <small>two-sample t test</small>
+        </label>
+        <label>每個 freezer basket 可放幾盒
+          <input id="boxes-per-basket" type="number" min="1" max="20" step="1" value="4">
+          <small>請依實際 rack／swab 管高修正</small>
+        </label>
+      </div>
+
+      <div class="instructions">
+        <span class="toggle-demo" aria-hidden="true"></span>
+        點每張卡右上角的開關，即可把項目標為「第二階段」；卡片會淡灰，總預算同步扣除。展開「預算假設」可直接改單價。
+      </div>
+    </section>
+
+    <section class="mindmap-section" aria-labelledby="map-title">
+      <div class="section-heading map-heading">
+        <div>
+          <p class="kicker">Interactive mind map</p>
+          <h2 id="map-title">收案、採檢與分析流程</h2>
+        </div>
+        <div class="legend" aria-label="圖例">
+          <span><i class="dot dot--core"></i>第一期／目前納入</span>
+          <span><i class="dot dot--deferred"></i>第二階段／目前不計價</span>
+          <span><i class="dot dot--critical"></i>前分析關鍵點</span>
+        </div>
+      </div>
+
+      <div id="root-node" class="root-node"></div>
+
+      <div class="preanalytic-strip" role="note">
+        <strong>固定採檢順序</strong>
+        <span>① 陰道 swab：lubricant、內診、導尿前</span>
+        <span>② 初始導尿尿液：灌注生理食鹽水前</span>
+        <span>③ 記錄採檢、上冰、離心、−80°C 時間</span>
+      </div>
+
+      <div class="branch-grid">
+        <section class="branch branch--urine" aria-labelledby="urine-title">
+          <div class="branch__header">
+            <div class="branch__icon" aria-hidden="true">U</div>
+            <div><p>Branch 01</p><h3 id="urine-title">Urine 尿液端</h3></div>
+          </div>
+          <div id="urine-nodes" class="node-list"></div>
+        </section>
+
+        <section class="branch branch--vagina" aria-labelledby="vagina-title">
+          <div class="branch__header">
+            <div class="branch__icon" aria-hidden="true">V</div>
+            <div><p>Branch 02</p><h3 id="vagina-title">Vagina 陰道端</h3></div>
+          </div>
+          <div id="vagina-nodes" class="node-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="operations" aria-labelledby="ops-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">Shared infrastructure</p>
+          <h2 id="ops-title">共用人力與研究成本</h2>
+        </div>
+        <p class="muted">這些不屬於單一檢體，但會進入總預算。</p>
+      </div>
+      <div id="operation-nodes" class="operation-grid"></div>
+    </section>
+
+    <section class="dashboard" aria-labelledby="dashboard-title">
+      <div class="section-heading dashboard-heading">
+        <div>
+          <p class="kicker">Live output</p>
+          <h2 id="dashboard-title">目前版本的 study power 與總預算</h2>
+        </div>
+        <div class="dashboard-actions">
+          <button id="export-csv" type="button" class="secondary-button">匯出預算 CSV</button>
+          <button id="print-plan" type="button" class="primary-button">列印／存成 PDF</button>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <article class="metric-card metric-card--power">
+          <p>Two-sample t test power</p>
+          <strong id="power-value">—</strong>
+          <span id="power-note">—</span>
+        </article>
+        <article class="metric-card">
+          <p>80% power 最小可偵測差異</p>
+          <strong id="mde-value">—</strong>
+          <span>Cohen's d；雙側 α 依上方設定</span>
+        </article>
+        <article class="metric-card metric-card--budget">
+          <p>目前納入項目總預算</p>
+          <strong id="budget-value">—</strong>
+          <span id="budget-note">含預備金</span>
+        </article>
+        <article class="metric-card">
+          <p>Cryobox／freezer basket</p>
+          <strong id="storage-value">—</strong>
+          <span id="storage-note">—</span>
+        </article>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="summary-panel">
+          <h3>預算分解</h3>
+          <div id="budget-breakdown"></div>
+          <label class="reserve-control">Assay failure／報價落差預備金
+            <span><input id="reserve-rate" type="number" min="0" max="50" step="1" value="10"> %</span>
+          </label>
+        </article>
+
+        <article class="summary-panel">
+          <h3>Cryobox 地圖</h3>
+          <div id="box-map" class="box-map"></div>
+        </article>
+      </div>
+
+      <div class="interpretation" id="interpretation"></div>
+    </section>
+
+    <section class="safeguards" aria-labelledby="guard-title">
+      <div class="section-heading">
+        <div><p class="kicker">Do not economize here</p><h2 id="guard-title">三個不能灰掉的偏差控制</h2></div>
+      </div>
+      <div class="guard-grid">
+        <article><b>同一採尿法</b><p>DU、BOO 都使用灌注前初始導尿尿液；不能讓診斷組別與採檢方式綁在一起。</p></article>
+        <article><b>年齡與停經配對</b><p>以 frequency matching 控制 age／menopause；另記錄 diabetes、用藥、prior sling／POP surgery。</p></article>
+        <article><b>Low-biomass controls</b><p>field blank、extraction blank、PCR blank、positive mock 與 biological samples 同批處理、平衡上機。</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>規劃工具，不取代正式 IRB SOP、檢驗平台 quotation 或統計諮詢。所有單價均可編輯；正式送件前應以合作核心／廠商書面報價更新。</p>
+    <p>Made for prospective DU–BOO biomarker planning.</p>
+  </footer>
+
+  <script src="vendor/jstat.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
