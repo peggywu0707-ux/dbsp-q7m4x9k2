@@ -1,0 +1,169 @@
+
+/* DU-BOO Study Planner v2 supplemental styles */
+.panel-section,
+.consultation {
+  padding: clamp(22px, 3vw, 42px);
+  background: rgba(255,255,255,.91);
+  border: 1px solid rgba(145,164,162,.35);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.input-grid--wide {
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+
+.panel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.evidence-card {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(31,52,58,.045);
+}
+
+.evidence-card h3 {
+  margin: 10px 0 12px;
+  font-size: 1.08rem;
+  line-height: 1.35;
+}
+
+.evidence-card p,
+.evidence-card li {
+  color: var(--muted);
+  font-size: .87rem;
+}
+
+.evidence-card ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.tier-label {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: .73rem;
+  font-weight: 900;
+  letter-spacing: .03em;
+}
+
+.evidence-card--tier1 {
+  border-top: 4px solid var(--teal);
+}
+.evidence-card--tier1 .tier-label {
+  color: #0b5e59;
+  background: var(--teal-soft);
+}
+
+.evidence-card--tier2 {
+  border-top: 4px solid var(--blue);
+}
+.evidence-card--tier2 .tier-label {
+  color: #235b7c;
+  background: var(--blue-soft);
+}
+
+.evidence-card--tier3 {
+  border-top: 4px solid var(--plum);
+}
+.evidence-card--tier3 .tier-label {
+  color: #754b72;
+  background: var(--plum-soft);
+}
+
+.panel-note {
+  margin-top: 15px;
+  padding: 16px 18px;
+  color: #5f471e;
+  background: var(--amber-soft);
+  border: 1px solid #ebcc9d;
+  border-radius: 14px;
+}
+
+.consult-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.consult-grid article {
+  padding: 18px;
+  background: #f7faf9;
+  border: 1px solid #e2e9e6;
+  border-radius: 14px;
+}
+
+.consult-grid b {
+  font-size: .95rem;
+}
+
+.consult-grid p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: .84rem;
+}
+
+.metric-grid--six {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.metric-card--gap {
+  color: #6d4c16;
+  background: var(--amber-soft);
+  border-color: #e8c88f;
+}
+
+.breakdown-line--total {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 2px solid #d7dfdc;
+  font-size: .95rem;
+}
+
+.guard-grid--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Slightly denser presentation for long scientific cards */
+.study-node .node-specs dd {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1120px) {
+  .input-grid--wide,
+  .panel-grid,
+  .consult-grid,
+  .metric-grid--six,
+  .guard-grid--four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .input-grid--wide,
+  .panel-grid,
+  .consult-grid,
+  .metric-grid--six,
+  .guard-grid--four {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-section,
+  .consultation {
+    border-radius: 20px;
+  }
+}
+
+@media print {
+  .panel-section,
+  .consultation {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+}
