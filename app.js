@@ -452,13 +452,15 @@ function renderDashboard() {
     `<div class="breakdown-line"><b>預備金 ${state.reserveRate}%</b><span>${TWD.format(reserve)}</span></div>` +
     `<div class="breakdown-line breakdown-line--total"><b>總計</b><span>${TWD.format(total)}</span></div>`;
 
-  const powerText = Number.isFinite(p)
-    ? `正式 ${state.duN}+${state.booN} targeted cohort 對 d=${state.effectSize.toFixed(2)} 的 power 約 ${(p*100).toFixed(1)}%，80% power 約需 d=${mde.toFixed(2)}。這仍是 extreme-phenotype discovery，而不是 diagnostic classifier validation。`
-    : '';
-  const feasibilityText = `另外的 6–8 人只用來鎖定 ATP fresh-vs-frozen、recovery、freeze–thaw、stabilizer 與 LLOQ；正式 biological comparison 從一開始就鎖定 15+15。`;
-  const capText = gap >= 0
-    ? `目前 placeholder 預算在院內上限內，仍有 ${TWD.format(gap)} 緩衝。`
-    : `目前 placeholder 超出院內上限 ${TWD.format(Math.abs(gap))}；先向平台確認 method development 能否合併、30 人 marginal assay cost，以及 Tier 2/3 是否可零額外方法成本加入。`;
+const powerText = Number.isFinite(p)
+  ? `本研究以 pure DU ${state.duN} 人與 pure BOO ${state.booN} 人進行 targeted metabolite comparison。此樣本數約有 ${(p*100).toFixed(1)}% power 偵測 Cohen's d≈${state.effectSize.toFixed(2)} 的大型組間差異，因此主要目的是尋找具有明顯 biological signal 的候選尿液指標，而不是建立或驗證臨床 diagnostic classifier。`
+  : '';
+
+const feasibilityText = `另外收集的 6–8 人只用於 pre-analytic feasibility，例如 ATP fresh-vs-frozen、recovery、freeze–thaw、stabilizer 與 LLOQ，不作 DU vs BOO biological comparison。`;
+
+const capText = gap >= 0
+  ? `依目前暫定單價，總預算在院內上限內，仍有 ${TWD.format(gap)} 緩衝。`
+  : `依目前暫定單價，總預算較院內上限高 ${TWD.format(Math.abs(gap))}。正式預算仍取決於平台報價，尤其是 method development 能否共用、ATP 是否必須採用 fresh workflow，以及 Tier 2/3 analytes 是否可在不增加額外 analytical method 的情況下併入。`;
 
   document.getElementById('interpretation').innerHTML = `<p><strong>如何解讀：</strong>${powerText} ${feasibilityText} ${capText}</p>`;
   renderBoxMap();
