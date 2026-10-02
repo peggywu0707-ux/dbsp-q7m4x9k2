@@ -1,12 +1,10 @@
 const TWD = new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', maximumFractionDigits: 0 });
 const INT = new Intl.NumberFormat('zh-TW', { maximumFractionDigits: 0 });
-const STORAGE_KEY = 'duBooPlannerState_v2_20261002';
+const STORAGE_KEY = 'duBooPlannerState_v2_1_20261002';
 
 const state = {
   preset: 'institutional',
   biobankN: 60,
-  targetedDuN: 5,
-  targetedBooN: 5,
   duN: 15,
   booN: 15,
   effectSize: 1.06,
@@ -67,12 +65,12 @@ const nodes = [
   },
   {
     id: 'u-target-core', branch: 'urine', code: 'ASSAY TIER 1', title: '核心 detrusor-failure targeted panel', stage: 'core', assay: true,
-    specimen: 'U-M1／U-P1／U-P2；先做 pure DU vs pure BOO extreme-phenotype first batch',
-    collection: '院內第一批預設 pure DU 5＋pure BOO 5；balanced batch、分析者盲化。完整 planned cohort 15＋15 留待第二階段。',
+    specimen: 'U-M1／U-P1／U-P2；pure DU vs pure BOO extreme-phenotype targeted cohort',
+    collection: '正式 biological comparison 直接採 pure DU 15＋pure BOO 15（或依上方設定）；一次 balanced batch、分析者盲化。6–8 人 pre-analytic feasibility 僅測 recovery／freeze–thaw／ATP fresh-vs-frozen，不作 DU vs BOO biological comparison。',
     process: 'Tier 1：ATP、NO₂⁻、NO₃⁻、PGE₂、8-OHdG。ATP/NOx 為預先指定 mechanistic contrast；PGE₂ 與 8-OHdG 提供 contractility／injury complementary axes。',
     storage: '同一 assay plate／batch 平衡 DU 與 BOO；pooled QC、calibration、LLOQ 與 isotope-labelled internal standards 依平台 SOP',
     box: '取 Box 02–05',
-    purpose: '核心問題：能否在 routine-style voided urine 中偵測「逼尿肌真正 contractile failure」而非只是 low-flow phenotype',
+    purpose: '核心問題：能否在 routine-style voided urine 中偵測「逼尿肌真正 contractile failure」而非只是 low-flow phenotype；陰性結果亦可提供 effect-size、precision 與 feasibility evidence。',
     costs: [
       { label: 'Pre-analytic feasibility／recovery pilot（固定 placeholder）', mode: 'fixed', unit: 50000 },
       { label: '核心方法建立／標準品／內標／QC（固定 placeholder）', mode: 'fixed', unit: 170000 },
@@ -229,12 +227,6 @@ const presets = {
   complete: [...nodes.map(n => n.id), ...operations.map(n => n.id)]
 };
 
-const presetDefaults = {
-  institutional: { targetedDuN: 5, targetedBooN: 5 },
-  targeted30: { targetedDuN: 15, targetedBooN: 15 },
-  biobank: { targetedDuN: 5, targetedBooN: 5 },
-  complete: { targetedDuN: 15, targetedBooN: 15 }
-};
 
 function initialEnabled() {
   const stored = localStorage.getItem(STORAGE_KEY);
@@ -249,7 +241,7 @@ function initialEnabled() {
   presets.institutional.forEach(id => { state.enabled[id] = true; });
 }
 
-function targetedAnalysisN() { return state.targetedDuN + state.targetedBooN; }
+function targetedAnalysisN() { return analysisN(); }
 function analysisN() { return state.duN + state.booN; }
 
 function countForMode(mode) {
@@ -300,7 +292,7 @@ function modeLabel(mode) {
   const labels = {
     fixed: '固定 1 式',
     biobank: `× ${state.biobankN} 位收案`,
-    targetedAnalysis: `× ${targetedAnalysisN()} 位 targeted 分析`,
+    targetedAnalysis: `× ${analysisN()} 位 targeted 分析`,
     analysis: `× ${analysisN()} 位完整分析`,
     analysisPlusUrine16sControls: `× ${analysisN() + state.controls.urine16s} 件`,
     analysisPlusVagina16sControls: `× ${analysisN() + state.controls.vagina16s} 件`,
@@ -315,8 +307,8 @@ function renderRoot() {
     <article class="root-card">
       <div class="node-code">STUDY ROOT</div>
       <h3>用 voided urine 找出「逼尿肌真正 contractile failure」</h3>
-      <p>先建立 ${INT.format(state.biobankN)} 人的 UDS-linked biobank；以 pure DU 與 pure BOO 作為 preserved-vs-failed contractility 的 extreme-phenotype contrast。第一批 targeted assay 為 DU ${state.targetedDuN}＋BOO ${state.targetedBooN}；完整 planned cohort 為 DU ${state.duN}＋BOO ${state.booN}。</p>
-      <div class="root-flow"><span>Clean-catch voided urine</span><span>Paired catheter reference</span><span>Blinded UDS adjudication</span><span>Targeted first batch</span><span>Locked-panel validation</span></div>
+      <p>先建立 ${INT.format(state.biobankN)} 人的 UDS-linked biobank；以 pure DU 與 pure BOO 作為 preserved-vs-failed contractility 的 extreme-phenotype contrast。正式 targeted biological comparison 直接為 DU ${state.duN}＋BOO ${state.booN}；另做 6–8 人 pre-analytic feasibility，但不拿來作 first-batch group comparison。</p>
+      <div class="root-flow"><span>Clean-catch voided urine</span><span>Paired catheter reference</span><span>Blinded UDS adjudication</span><span>6–8 人 pre-analytic pilot</span><span>15+15 targeted comparison</span></div>
     </article>`;
 }
 
@@ -433,15 +425,12 @@ function renderBoxMap() {
 }
 
 function renderDashboard() {
-  const pilotP = powerFor(state.effectSize, state.targetedDuN, state.targetedBooN, state.alpha);
-  const fullP = powerFor(state.effectSize, state.duN, state.booN, state.alpha);
-  const fullMde = solveMde(state.duN, state.booN);
+  const p = powerFor(state.effectSize, state.duN, state.booN, state.alpha);
+  const mde = solveMde(state.duN, state.booN);
 
-  document.getElementById('pilot-power-value').textContent = Number.isFinite(pilotP) ? `${(pilotP * 100).toFixed(1)}%` : '—';
-  document.getElementById('pilot-power-note').textContent = `第一批 d=${state.effectSize.toFixed(2)}；n=${state.targetedDuN}+${state.targetedBooN}；主要用途是 feasibility／preliminary signal`;
-  document.getElementById('full-power-value').textContent = Number.isFinite(fullP) ? `${(fullP * 100).toFixed(1)}%` : '—';
-  document.getElementById('full-power-note').textContent = `完整 planned cohort；n=${state.duN}+${state.booN}`;
-  document.getElementById('mde-value').textContent = Number.isFinite(fullMde) ? `d = ${fullMde.toFixed(2)}` : '—';
+  document.getElementById('power-value').textContent = Number.isFinite(p) ? `${(p * 100).toFixed(1)}%` : '—';
+  document.getElementById('power-note').textContent = `d=${state.effectSize.toFixed(2)}；n=${state.duN}+${state.booN}；pure DU vs pure BOO extreme-phenotype comparison`;
+  document.getElementById('mde-value').textContent = Number.isFinite(mde) ? `d = ${mde.toFixed(2)}` : '—';
 
   const groups = groupCosts();
   const subtotal = Object.values(groups).reduce((a, b) => a + b, 0);
@@ -463,17 +452,15 @@ function renderDashboard() {
     `<div class="breakdown-line"><b>預備金 ${state.reserveRate}%</b><span>${TWD.format(reserve)}</span></div>` +
     `<div class="breakdown-line breakdown-line--total"><b>總計</b><span>${TWD.format(total)}</span></div>`;
 
-  const pilotText = Number.isFinite(pilotP)
-    ? `第一批 ${state.targetedDuN}+${state.targetedBooN} 對 d=${state.effectSize.toFixed(2)} 的 power 約 ${(pilotP*100).toFixed(1)}%，因此應定位為 feasibility／large-signal discovery，而不是 classifier validation。`
-    : '第一批樣本數不足以做 power 計算。';
-  const fullText = Number.isFinite(fullP)
-    ? `完整 ${state.duN}+${state.booN} cohort 的 power 約 ${(fullP*100).toFixed(1)}%，80% power 約需 d=${fullMde.toFixed(2)}。`
+  const powerText = Number.isFinite(p)
+    ? `正式 ${state.duN}+${state.booN} targeted cohort 對 d=${state.effectSize.toFixed(2)} 的 power 約 ${(p*100).toFixed(1)}%，80% power 約需 d=${mde.toFixed(2)}。這仍是 extreme-phenotype discovery，而不是 diagnostic classifier validation。`
     : '';
+  const feasibilityText = `另外的 6–8 人只用來鎖定 ATP fresh-vs-frozen、recovery、freeze–thaw、stabilizer 與 LLOQ；正式 biological comparison 從一開始就鎖定 15+15。`;
   const capText = gap >= 0
     ? `目前 placeholder 預算在院內上限內，仍有 ${TWD.format(gap)} 緩衝。`
-    : `目前 placeholder 超出院內上限 ${TWD.format(Math.abs(gap))}；最值得先向平台確認的是 method development 是否可合併、ATP 是否需要 fresh workflow，以及 Tier 2/3 是否可零額外方法成本加入。`;
+    : `目前 placeholder 超出院內上限 ${TWD.format(Math.abs(gap))}；先向平台確認 method development 能否合併、30 人 marginal assay cost，以及 Tier 2/3 是否可零額外方法成本加入。`;
 
-  document.getElementById('interpretation').innerHTML = `<p><strong>如何解讀：</strong>${pilotText} ${fullText} ${capText}</p>`;
+  document.getElementById('interpretation').innerHTML = `<p><strong>如何解讀：</strong>${powerText} ${feasibilityText} ${capText}</p>`;
   renderBoxMap();
 }
 
@@ -483,8 +470,6 @@ function saveState() {
 
 function syncInputs() {
   document.getElementById('biobank-n').value = state.biobankN;
-  document.getElementById('targeted-du-n').value = state.targetedDuN;
-  document.getElementById('targeted-boo-n').value = state.targetedBooN;
   document.getElementById('du-n').value = state.duN;
   document.getElementById('boo-n').value = state.booN;
   document.getElementById('effect-size').value = state.effectSize;
@@ -525,16 +510,12 @@ function applyPreset(name) {
   state.preset = name;
   state.enabled = {};
   (presets[name] || []).forEach(id => { state.enabled[id] = true; });
-  const defaults = presetDefaults[name] || {};
-  Object.assign(state, defaults);
   render();
 }
 
 function bindControls() {
   const numericBindings = {
     'biobank-n': ['biobankN', 1],
-    'targeted-du-n': ['targetedDuN', 2],
-    'targeted-boo-n': ['targetedBooN', 2],
     'du-n': ['duN', 2],
     'boo-n': ['booN', 2],
     'effect-size': ['effectSize', 0.05],
@@ -564,8 +545,8 @@ function csvEscape(value) {
 
 function exportCsv() {
   const rows = [
-    ['方案', state.preset, '樣本庫N', state.biobankN, '第一批targeted_DU', state.targetedDuN, '第一批targeted_BOO', state.targetedBooN],
-    ['完整planned_DU', state.duN, '完整planned_BOO', state.booN, '院內上限_NT$', state.budgetCap, '預備金_%', state.reserveRate],
+    ['方案', state.preset, '樣本庫N', state.biobankN, 'Primary_targeted_DU', state.duN, 'Primary_targeted_BOO', state.booN],
+    ['Preanalytic_feasibility', '6–8 participants', '院內上限_NT$', state.budgetCap, '預備金_%', state.reserveRate],
     [],
     ['狀態','分支','項目','費用內容','計價方式','數量','單價_NT$','小計_NT$']
   ];

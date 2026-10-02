@@ -19,7 +19,7 @@
         <h1>女性逼尿肌收縮衰竭分子表型研究規劃器</h1>
         <p>核心問題不是「DU 跟 BOO 有沒有不同」，而是：自然排出的尿裡，能不能辨認 detrusor 真正失效，而不是只有出口阻塞。</p>
       </div>
-      <div class="hero__badge" aria-label="目前版本">Protocol v2.0<br><span>2026-10-02</span></div>
+      <div class="hero__badge" aria-label="目前版本">Protocol v2.1<br><span>2026-10-02</span></div>
     </div>
   </header>
 
@@ -31,8 +31,8 @@
           <h2 id="controls-title">先設定這次要算的規模與院內上限</h2>
         </div>
         <div class="preset-buttons" role="group" aria-label="研究版本快速設定">
-          <button type="button" class="preset active" data-preset="institutional">院內 40 萬版</button>
-          <button type="button" class="preset" data-preset="targeted30">完整 targeted 15+15</button>
+          <button type="button" class="preset active" data-preset="institutional">院內 40 萬目標｜Tier 1 15+15</button>
+          <button type="button" class="preset" data-preset="targeted30">Tier 1+2 targeted 15+15</button>
           <button type="button" class="preset" data-preset="biobank">只建樣本庫</button>
           <button type="button" class="preset" data-preset="complete">第二階段 multi-omics</button>
         </div>
@@ -43,21 +43,13 @@
           <input id="biobank-n" type="number" min="1" max="500" step="1" value="60">
           <small>所有接受 PFS 且同意研究者</small>
         </label>
-        <label>第一批 targeted：Pure DU
-          <input id="targeted-du-n" type="number" min="2" max="250" step="1" value="5">
-          <small>院內 pilot 預設 5 人</small>
-        </label>
-        <label>第一批 targeted：Pure BOO
-          <input id="targeted-boo-n" type="number" min="2" max="250" step="1" value="5">
-          <small>院內 pilot 預設 5 人</small>
-        </label>
-        <label>完整 planned：Pure DU
+        <label>Primary targeted：Pure DU
           <input id="du-n" type="number" min="2" max="250" step="1" value="15">
-          <small>第二階段 locked-panel cohort</small>
+          <small>第一期正式 biological comparison</small>
         </label>
-        <label>完整 planned：Pure BOO
+        <label>Primary targeted：Pure BOO
           <input id="boo-n" type="number" min="2" max="250" step="1" value="15">
-          <small>第二階段 locked-panel cohort</small>
+          <small>與 DU 一次 balanced batch</small>
         </label>
         <label>預期 Cohen's d
           <input id="effect-size" type="number" min="0.05" max="3" step="0.05" value="1.06">
@@ -79,7 +71,7 @@
 
       <div class="instructions">
         <span class="toggle-demo" aria-hidden="true"></span>
-        點每張卡右上角開關可納入／移出目前預算；展開「預算假設」可直接改研究員提供的 method-development、per-sample 與耗材報價。第一批 targeted N 和完整 planned N 分開計算。
+        點每張卡右上角開關可納入／移出目前預算；展開「預算假設」可直接改研究員提供的 method-development、per-sample 與耗材報價。正式 biological comparison 直接用 15+15；另外的 6–8 人只做 pre-analytic feasibility，不拿來比較 DU vs BOO。
       </div>
     </section>
 
@@ -205,7 +197,7 @@
       <div class="section-heading dashboard-heading">
         <div>
           <p class="kicker">Live output</p>
-          <h2 id="dashboard-title">第一批 targeted、完整 cohort 與院內預算差額</h2>
+          <h2 id="dashboard-title">Targeted 15+15 的 study power 與院內預算差額</h2>
         </div>
         <div class="dashboard-actions">
           <button id="export-csv" type="button" class="secondary-button">匯出預算 CSV</button>
@@ -215,19 +207,19 @@
 
       <div class="metric-grid metric-grid--six">
         <article class="metric-card metric-card--power">
-          <p>第一批 targeted power</p>
-          <strong id="pilot-power-value">—</strong>
-          <span id="pilot-power-note">—</span>
+          <p>Primary targeted power</p>
+          <strong id="power-value">—</strong>
+          <span id="power-note">—</span>
         </article>
         <article class="metric-card">
-          <p>完整 planned cohort power</p>
-          <strong id="full-power-value">—</strong>
-          <span id="full-power-note">—</span>
-        </article>
-        <article class="metric-card">
-          <p>完整 cohort 80% power MDE</p>
+          <p>80% power 最小可偵測差異</p>
           <strong id="mde-value">—</strong>
           <span>Cohen's d；雙側 α 依上方設定</span>
+        </article>
+        <article class="metric-card">
+          <p>Pre-analytic feasibility</p>
+          <strong>6–8 人</strong>
+          <span>只測 recovery／freeze–thaw／ATP fresh-vs-frozen；不作 DU vs BOO biological comparison</span>
         </article>
         <article class="metric-card metric-card--budget">
           <p>目前納入項目總預算</p>
