@@ -3,278 +3,131 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <meta name="description" content="女性 detrusor contractile failure 尿液分子表型研究：採檢、targeted panel、biobank、預算與 power 規劃器。">
-  <title>DU–BOO Detrusor Failure Study Planner</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles_v2.css">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <meta name="description" content="DU–BOO urodynamics-linked urinary biomarker study planner and NTUH core-facility budget calculator.">
+  <title>DU–BOO Study Planner v3</title>
+  <link rel="stylesheet" href="styles_v3.css?v=20261023a">
 </head>
 <body>
-  <header class="hero">
-    <div class="hero__eyebrow">Urodynamics-linked urinary biomarker development</div>
-    <div class="hero__content">
-      <div>
-        <h1>女性逼尿肌收縮衰竭分子表型研究規劃器</h1>
-        <p>核心問題不是「DU 跟 BOO 有沒有不同」，而是：自然排出的尿裡，能不能辨認 detrusor 真正失效，而不是只有出口阻塞。</p>
-      </div>
-      <div class="hero__badge" aria-label="目前版本">Protocol v2.1<br><span>2026-10-02</span></div>
-    </div>
-  </header>
+<header class="hero">
+  <div>
+    <div class="eyebrow">Urodynamics-linked urinary biomarker development</div>
+    <h1>DU–BOO Study Planner</h1>
+    <p>從 standardized voided urine 尋找 detrusor contractile dysfunction biomarkers；把研究規模、院內核心服務、low-biomass QC 與分階段預算放在同一個可調整工具。</p>
+  </div>
+  <div class="version">Protocol / Budget v3.0<br><span>Official-price check: 2026-10-23</span></div>
+</header>
 
-  <main>
-    <section class="control-panel" aria-labelledby="controls-title">
-      <div class="section-heading">
-        <div>
-          <p class="kicker">Study assumptions</p>
-          <h2 id="controls-title">先設定這次要算的規模與院內上限</h2>
-        </div>
-        <div class="preset-buttons" role="group" aria-label="研究版本快速設定">
-          <button type="button" class="preset active" data-preset="institutional">院內 40 萬目標｜Tier 1 15+15</button>
-          <button type="button" class="preset" data-preset="targeted30">Tier 1+2 targeted 15+15</button>
-          <button type="button" class="preset" data-preset="biobank">只建樣本庫</button>
-          <button type="button" class="preset" data-preset="complete">第二階段 multi-omics</button>
-        </div>
-      </div>
+<main>
+<section class="card" id="scientific-frame">
+  <div class="section-head"><div><p class="kicker">Scientific frame</p><h2>研究主軸不變</h2></div><span class="badge badge-fixed">FIXED PROTOCOL</span></div>
+  <div class="thesis">女性 voiding dysfunction 中，以 UDS adjudication 選出 <b>pure DU</b> 與 <b>pure BOO with preserved detrusor contraction</b>，尋找能反映 <b>detrusor contractile failure</b> 而不是只有 low-flow phenotype 的尿液分子訊號。</div>
+  <div class="phase-grid">
+    <article><span class="phase-tag">Phase 1</span><h3>Clinical biomarker discovery</h3><p><b>固定：</b>prospective biobank、UDS phenotype、pure DU 15 vs pure BOO 15、targeted urinary metabolomics。</p><p><b>Phase 1 multi-omics module：</b>urine/vaginal 16S + bacterial-load QC；依核心可行性與資金啟動。</p></article>
+    <article><span class="phase-tag">Phase 2</span><h3>Extended molecular phenotyping</h3><p>EV-associated miRNA/protein、urinary proteomics、candidate validation、selected-sample WGS。</p></article>
+    <article><span class="phase-tag">Phase 3</span><h3>Mechanistic validation</h3><p>Seahorse、bladder smooth muscle cell、Nanolive、BOO/ischemia animal model、fibrosis/contractility。</p></article>
+  </div>
+</section>
 
-      <div class="input-grid input-grid--wide">
-        <label>預計建立樣本庫人數
-          <input id="biobank-n" type="number" min="1" max="500" step="1" value="60">
-          <small>所有接受 PFS 且同意研究者</small>
-        </label>
-        <label>Primary targeted：Pure DU
-          <input id="du-n" type="number" min="2" max="250" step="1" value="15">
-          <small>第一期正式 biological comparison</small>
-        </label>
-        <label>Primary targeted：Pure BOO
-          <input id="boo-n" type="number" min="2" max="250" step="1" value="15">
-          <small>與 DU 一次 balanced batch</small>
-        </label>
-        <label>預期 Cohen's d
-          <input id="effect-size" type="number" min="0.05" max="3" step="0.05" value="1.06">
-          <small>extreme-phenotype discovery 預設</small>
-        </label>
-        <label>雙側 α
-          <input id="alpha" type="number" min="0.001" max="0.2" step="0.001" value="0.05">
-          <small>two-sample t test</small>
-        </label>
-        <label>院內預算上限 NT$
-          <input id="budget-cap" type="number" min="0" max="10000000" step="10000" value="400000">
-          <small>預設 40 萬，可直接改</small>
-        </label>
-        <label>每個 freezer basket 可放幾盒
-          <input id="boxes-per-basket" type="number" min="1" max="20" step="1" value="4">
-          <small>依實際 rack／swab 管高修正</small>
-        </label>
-      </div>
+<section class="card" id="protocol-status">
+  <div class="section-head"><div><p class="kicker">Protocol status</p><h2>哪些現在鎖死、哪些等核心確認</h2></div></div>
+  <div class="status-grid">
+    <article class="status-card fixed"><h3>Fixed protocol</h3><ul>
+      <li>Clean-catch voided urine = primary translational specimen。</li>
+      <li>不額外收 research catheterized urine。</li>
+      <li>Prospective biobank 先收案，UDS 後 adjudicate pure DU/BOO。</li>
+      <li>Primary targeted comparison = DU 15 + BOO 15。</li>
+      <li>不強制 age/menopause matching；保留真實年齡 spectrum，預先做 age-adjusted sensitivity analysis。</li>
+      <li>Tier 1 analytes：ATP、NO₂⁻/NO₃⁻、PGE₂、8-OHdG。</li>
+    </ul></article>
+    <article class="status-card pilot"><h3>Pilot-dependent</h3><ul>
+      <li>ATP fresh vs rapid-freeze/batch assay、stabilizer、recovery、LLOQ。</li>
+      <li>尿液 glycolysis/TCA 現成 panel 是否可直接套用或需 matrix validation。</li>
+      <li>Tier 2/3 是否可同 method 低成本加入。</li>
+      <li>Phase 1 16S：short-read vs full-length、bacterial-load qPCR/ddPCR、controls 數量與 batch design。</li>
+      <li>Future-omics aliquot 的 EV/proteomics 前處理與最低體積。</li>
+    </ul></article>
+    <article class="status-card future"><h3>Future option</h3><ul>
+      <li>EV miRNA/protein、proteomics、selected WGS。</li>
+      <li>Urinary cell flow cytometry（需 fresh-cell workflow，不能靠目前 frozen supernatant 補救）。</li>
+      <li>Seahorse XF Pro、Nanolive、細胞/動物模型。</li>
+      <li>候選 urinary/vaginal bacterial isolate 的培養與功能驗證。</li>
+    </ul></article>
+  </div>
+</section>
 
-      <div class="instructions">
-        <span class="toggle-demo" aria-hidden="true"></span>
-        點每張卡右上角開關可納入／移出目前預算；展開「預算假設」可直接改研究員提供的 method-development、per-sample 與耗材報價。正式 biological comparison 直接用 15+15；另外的 6–8 人只做 pre-analytic feasibility，不拿來比較 DU vs BOO。
-      </div>
-    </section>
+<section class="card" id="biobank">
+  <div class="section-head"><div><p class="kicker">Biobank SOP</p><h2>保留未來彈性，但不把 Phase 1 做複雜</h2></div></div>
+  <div class="flow-grid">
+    <article><div class="flow-code">U-CLIN</div><h3>Clinical QC aliquot</h3><p>同一泡 clean-catch voided urine：UA/culture/pyuria/hematuria；Cr + SG 或 osmolality 作 normalization。</p></article>
+    <article><div class="flow-code">U-MET</div><h3>Targeted metabolomics</h3><p>Cell-free aliquots，−80°C、避免 freeze–thaw；正式離心速度與 direct-freeze 可否由代謝體核心確認。</p></article>
+    <article><div class="flow-code">U-PUR</div><h3>Purinergic aliquot</h3><p>快速處理/冷凍並記錄 collection-to-freeze time；fresh ATP 只在 pre-analytic pilot 比較，不預設全 cohort 當日測。</p></article>
+    <article><div class="flow-code">U-DNA</div><h3>Microbiome pellet</h3><p>Phase 1 multi-omics module 使用；low-biomass blanks、positive mock、bacterial load 與 batch-aware analysis 必須一起做。</p></article>
+    <article class="pilot-outline"><div class="flow-code">U-FUTURE</div><h3>Future EV / proteomics reserve</h3><p>若尿量允許，另留不經反覆凍融的獨立 aliquot。<b>不先鎖 high-speed pre-clear、穩定劑或 EV isolation</b>；先由 EV/proteomics 核心確認 urine matrix、最小體積與 −80°C 相容性。</p></article>
+    <article><div class="flow-code">V-DNA / V-BANK</div><h3>Vaginal biobank</h3><p>Voided urine 後、lubricant/內診前固定部位 swab；供 Phase 1 16S 或後續 cross-site ecology。</p></article>
+  </div>
+  <div class="warning"><b>Flow cytometry 例外：</b>如果未來要看 urinary immune/epithelial cells，必須另訂 fresh urine / fresh-cell processing SOP；現有 frozen cell-free urine 不等價。</div>
+</section>
 
-    <section class="panel-section" aria-labelledby="panel-title">
-      <div class="section-heading">
-        <div>
-          <p class="kicker">Revised targeted panel</p>
-          <h2 id="panel-title">先找「detrusor failure signature」，不是證明某一顆 metabolite</h2>
-        </div>
-        <p class="muted">目前沒有任何單一尿液 metabolite 已可當作 female DU 的 routine clinical diagnostic test。</p>
-      </div>
+<section class="card" id="settings">
+  <div class="section-head"><div><p class="kicker">Interactive research budget</p><h2>研究規模與 QC 數量</h2></div>
+    <div class="preset-row"><button data-preset="minimal">Minimal pilot</button><button data-preset="core" class="active">Core multi-omics</button><button data-preset="expanded">Expanded research</button></div>
+  </div>
+  <div class="input-grid">
+    <label>Biobank enrollment<input id="biobankN" type="number" min="1" value="60"><small>採檢/保存成本依此計</small></label>
+    <label>Pure DU<input id="duN" type="number" min="2" value="15"><small>targeted metabolomics</small></label>
+    <label>Pure BOO<input id="booN" type="number" min="2" value="15"><small>targeted metabolomics</small></label>
+    <label>Urine 16S participants<input id="urineN" type="number" min="0" value="30"><small>可與 targeted N 不同</small></label>
+    <label>Vaginal 16S participants<input id="vaginaN" type="number" min="0" value="30"><small>可與 urine 分開</small></label>
+    <label>Urine assays / participant<input id="urineRep" type="number" min="1" value="1"><small>通常 1</small></label>
+    <label>Vaginal assays / participant<input id="vaginaRep" type="number" min="1" value="1"><small>通常 1</small></label>
+    <label>Negative controls<input id="negativeControls" type="number" min="0" value="8"><small>field/extraction/PCR/library blanks</small></label>
+    <label>Positive controls<input id="positiveControls" type="number" min="0" value="2"><small>mock / positive</small></label>
+    <label>Technical replicate entries<input id="technicalReplicates" type="number" min="0" value="4"><small>額外 sequencing entries</small></label>
+    <label>QC samples / run<input id="qcSamples" type="number" min="0" value="4"><small>依平台流程修改</small></label>
+    <label>Bioinformatics hours<input id="bioinfoHours" type="number" min="0" value="20"><small>官方 500 / hour</small></label>
+  </div>
+</section>
 
-      <div class="panel-grid">
-        <article class="evidence-card evidence-card--tier1">
-          <div class="tier-label">Tier 1 · 第一優先</div>
-          <h3>ATP · NO₂⁻/NO₃⁻ · PGE₂ · 8-OHdG</h3>
-          <p><b>定位：</b>最直接的 detrusor-failure mechanistic starting panel。</p>
-          <ul>
-            <li><b>ATP/NOx：</b>已有 human UAB/DU biological signal，但 ATP 結果不一致且前分析不穩定；不能稱 validated biomarker。</li>
-            <li><b>PGE₂：</b>補足 detrusor contractility／recoverability 軸。</li>
-            <li><b>8-OHdG：</b>補足 oxidative injury／decompensation 軸。</li>
-          </ul>
-        </article>
+<section class="card" id="modules">
+  <div class="section-head"><div><p class="kicker">Assay modules</p><h2>把 sample、run/chip、QC 與待詢價項目拆開</h2></div><p class="muted">勾選模組後，官方費用、暫估與待詢價會分開加總。</p></div>
+  <div id="module-list" class="module-list"></div>
+</section>
 
-        <article class="evidence-card evidence-card--tier2">
-          <div class="tier-label">Tier 2 · 解釋機制</div>
-          <h3>ADP · AMP · adenosine · ± 8-isoprostane</h3>
-          <p><b>定位：</b>不是為了多找 biomarkers，而是讓 ATP 的解讀站得住。</p>
-          <ul>
-            <li>ATP 低：究竟是 release 少，還是 degradation 快？</li>
-            <li>8-isoprostane 若能和 oxidative-stress method 低成本一起跑，可作 lipid peroxidation 補充。</li>
-          </ul>
-        </article>
+<section class="card" id="dashboard">
+  <div class="section-head"><div><p class="kicker">Live budget</p><h2>即時研究決策</h2></div><div class="actions"><button id="exportCsv">匯出目前預算 CSV</button><button id="printPlan">列印 / PDF</button></div></div>
+  <div class="metric-grid">
+    <article><p>Planning total</p><strong id="planningTotal">—</strong><span id="pendingNote">—</span></article>
+    <article><p>Official-price components</p><strong id="officialSubtotal">—</strong><span>只加總可追溯公告單價</span></article>
+    <article><p>Cost / biobank participant</p><strong id="costPerBiobank">—</strong><span>planning total ÷ enrollment</span></article>
+    <article><p>Cost / targeted participant</p><strong id="costPerAnalyzed">—</strong><span>planning total ÷ (DU+BOO)</span></article>
+    <article class="budget400"><p>Under NT$400,000</p><strong id="remain400">—</strong><span id="remain400note">—</span></article>
+    <article class="budget1000"><p>Under NT$1,000,000</p><strong id="remain1000">—</strong><span id="remain1000note">—</span></article>
+  </div>
+  <div class="dashboard-grid">
+    <article class="panel"><h3>Fixed vs variable</h3><div id="fixedVariable"></div></article>
+    <article class="panel"><h3>Breakdown by core / assay</h3><div id="coreBreakdown"></div></article>
+  </div>
+  <article class="decision-box"><h3>Decision support</h3><div id="decisionSupport"></div></article>
+</section>
 
-        <article class="evidence-card evidence-card--tier3">
-          <div class="tier-label">Tier 3 · 平台可行才加</div>
-          <h3>citrulline · proline · energy quartet</h3>
-          <p><b>定位：</b>exploratory pathway layer。</p>
-          <ul>
-            <li><b>citrulline/proline：</b>有 LUTS／BOO exploratory rationale，值得問平台能否低成本併入。</li>
-            <li><b>lactate/pyruvate/succinate/citrate：</b>保留 bioenergetic hypothesis，但 direct DU/BOO human evidence 較弱；若需另開昂貴方法就先不做。</li>
-          </ul>
-        </article>
-      </div>
+<section class="card" id="catalog">
+  <div class="section-head"><div><p class="kicker">Traceable price catalogue</p><h2>臺大醫院核心價格來源</h2></div><p class="muted">查核日 2026-10-23。價格會變動；正式送件仍以核心最新書面報價為準。</p></div>
+  <div class="table-wrap"><table><thead><tr><th>核心 / 項目</th><th>價格</th><th>單位</th><th>價格狀態</th><th>適用檢體 / 限制</th><th>公告/查核</th><th>來源</th></tr></thead><tbody id="catalogBody"></tbody></table></div>
+</section>
 
-      <div class="panel-note">
-        <b>研究定位：</b>NO/ATP 是漂亮的 biological axis，不是臨床現成檢驗。第一期真正要找的是：哪一個或哪一組 analytes 最穩定、最容易保存、最能在 <b>clean-catch voided urine</b> 中辨認 detrusor contractile failure。
-      </div>
-    </section>
-
-    <section class="mindmap-section" aria-labelledby="map-title">
-      <div class="section-heading map-heading">
-        <div>
-          <p class="kicker">Interactive mind map</p>
-          <h2 id="map-title">收案、採檢與分析流程</h2>
-        </div>
-        <div class="legend" aria-label="圖例">
-          <span><i class="dot dot--core"></i>目前納入</span>
-          <span><i class="dot dot--deferred"></i>第二階段／目前不計價</span>
-          <span><i class="dot dot--critical"></i>前分析關鍵點</span>
-        </div>
-      </div>
-
-      <div id="root-node" class="root-node"></div>
-
-      <div class="preanalytic-strip" role="note">
-        <strong>建議採檢順序</strong>
-        <span>① clean-catch voided urine：導尿／內診前，作 primary translational specimen</span>
-        <span>② vaginal swabs：voided urine 後、lubricant／內診／導尿前</span>
-        <span>③ catheterized bladder-reference：free uroflow 後、UDS filling 前</span>
-        <span>④ 全程記錄 collection → ice／spin／−80°C 時間</span>
-      </div>
-
-      <div class="branch-grid">
-        <section class="branch branch--urine" aria-labelledby="urine-title">
-          <div class="branch__header">
-            <div class="branch__icon" aria-hidden="true">U</div>
-            <div><p>Branch 01</p><h3 id="urine-title">Urine：primary translational specimen</h3></div>
-          </div>
-          <div id="urine-nodes" class="node-list"></div>
-        </section>
-
-        <section class="branch branch--vagina" aria-labelledby="vagina-title">
-          <div class="branch__header">
-            <div class="branch__icon" aria-hidden="true">V</div>
-            <div><p>Branch 02</p><h3 id="vagina-title">Vagina：urogenital ecology reference</h3></div>
-          </div>
-          <div id="vagina-nodes" class="node-list"></div>
-        </section>
-      </div>
-    </section>
-
-    <section class="consultation" aria-labelledby="consult-title">
-      <div class="section-heading">
-        <div>
-          <p class="kicker">Bring this to the core facility</p>
-          <h2 id="consult-title">和 metabolomics 研究員會談時，真正要問的 6 件事</h2>
-        </div>
-        <p class="muted">答案會直接決定最後 panel 與 40 萬預算是否可行。</p>
-      </div>
-      <div class="consult-grid">
-        <article><b>1. 採檢後能不能直接 −80°C？</b><p>逐項確認哪些 analytes 可 direct freeze，哪些一定要先離心、加 stabilizer、酸化或 fresh assay。</p></article>
-        <article><b>2. ATP 到底要多麻煩？</b><p>比較 fresh luciferase、rapid-freeze 後 batch assay 與 recovery；先做 6–8 人 feasibility，而不是預設全 cohort 當日測。</p></article>
-        <article><b>3. Tier 1 需要幾套方法？</b><p>ATP、NOx、PGE₂、8-OHdG 能否共用 extraction／LC-MS？哪些其實更適合 separate assay？</p></article>
-        <article><b>4. Tier 2/3 能不能「順便加」？</b><p>ADP/AMP/adenosine、8-isoprostane、citrulline、proline、energy quartet 若不增加方法數才值得第一期納入。</p></article>
-        <article><b>5. 定量 QC 怎麼做？</b><p>calibration、isotope-labelled internal standards、LLOQ、matrix effect、pooled QC、creatinine/SG normalization 與 freeze–thaw 規則。</p></article>
-        <article><b>6. 請直接報三個價</b><p>method development、第一批約 10 samples、完整約 30 samples；另列 repeat/QC/standard costs，直接填回本頁。</p></article>
-      </div>
-    </section>
-
-    <section class="operations" aria-labelledby="ops-title">
-      <div class="section-heading">
-        <div>
-          <p class="kicker">Shared infrastructure</p>
-          <h2 id="ops-title">共用人力與研究成本</h2>
-        </div>
-        <p class="muted">這些不屬於單一檢體，但會進入總預算。</p>
-      </div>
-      <div id="operation-nodes" class="operation-grid"></div>
-    </section>
-
-    <section class="dashboard" aria-labelledby="dashboard-title">
-      <div class="section-heading dashboard-heading">
-        <div>
-          <p class="kicker">Live output</p>
-          <h2 id="dashboard-title">Targeted 15+15 的 study power 與院內預算差額</h2>
-        </div>
-        <div class="dashboard-actions">
-          <button id="export-csv" type="button" class="secondary-button">匯出預算 CSV</button>
-          <button id="print-plan" type="button" class="primary-button">列印／存成 PDF</button>
-        </div>
-      </div>
-
-      <div class="metric-grid metric-grid--six">
-        <article class="metric-card metric-card--power">
-          <p>Primary targeted power</p>
-          <strong id="power-value">—</strong>
-          <span id="power-note">—</span>
-        </article>
-        <article class="metric-card">
-          <p>80% power 最小可偵測差異</p>
-          <strong id="mde-value">—</strong>
-          <span>Cohen's d；雙側 α 依上方設定</span>
-        </article>
-        <article class="metric-card">
-          <p>Pre-analytic feasibility</p>
-          <strong>6–8 人</strong>
-          <span>只測 recovery／freeze–thaw／ATP fresh-vs-frozen；不作 DU vs BOO biological comparison</span>
-        </article>
-        <article class="metric-card metric-card--budget">
-          <p>目前納入項目總預算</p>
-          <strong id="budget-value">—</strong>
-          <span id="budget-note">含預備金</span>
-        </article>
-        <article class="metric-card metric-card--gap">
-          <p>相對院內上限</p>
-          <strong id="budget-gap-value">—</strong>
-          <span id="budget-gap-note">—</span>
-        </article>
-        <article class="metric-card">
-          <p>Cryobox／freezer basket</p>
-          <strong id="storage-value">—</strong>
-          <span id="storage-note">—</span>
-        </article>
-      </div>
-
-      <div class="dashboard-grid">
-        <article class="summary-panel">
-          <h3>預算分解</h3>
-          <div id="budget-breakdown"></div>
-          <label class="reserve-control">Assay failure／報價落差預備金
-            <span><input id="reserve-rate" type="number" min="0" max="50" step="1" value="10"> %</span>
-          </label>
-        </article>
-
-        <article class="summary-panel">
-          <h3>Cryobox 地圖</h3>
-          <div id="box-map" class="box-map"></div>
-        </article>
-      </div>
-
-      <div class="interpretation" id="interpretation"></div>
-    </section>
-
-    <section class="safeguards" aria-labelledby="guard-title">
-      <div class="section-heading">
-        <div><p class="kicker">Do not economize here</p><h2 id="guard-title">四個不能灰掉的偏差控制</h2></div>
-      </div>
-      <div class="guard-grid guard-grid--four">
-        <article><b>Primary voided urine 一致</b><p>DU、BOO 都用同一套 clean-catch voided urine SOP；不能讓診斷組別與採尿法綁在一起。</p></article>
-        <article><b>Catheter urine 只是 reference</b><p>導尿檢體可幫助來源定位，但殘尿量不足不能變成排除條件，否則會選到高 PVR 個案。</p></article>
-        <article><b>年齡與停經配對</b><p>frequency matching 控制 age／menopause；另記錄 diabetes、用藥、prior sling／POP surgery。</p></article>
-        <article><b>Low-biomass controls</b><p>field blank、extraction blank、PCR/library blank、positive mock 與 biological samples 同批處理；absolute bacterial load 必須一起看。</p></article>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>規劃工具，不取代正式 IRB SOP、檢驗平台 quotation 或統計諮詢。所有單價均為可編輯 placeholder；正式送件前以合作平台書面報價更新。</p>
-    <p>Long-term goal: a noninvasive voided-urine signature of detrusor contractile failure.</p>
-  </footer>
-
-  <script src="vendor/jstat.min.js"></script>
-  <script src="app.js"></script>
+<section class="card" id="safeguards">
+  <div class="section-head"><div><p class="kicker">Bias control</p><h2>不因新技術改變的四件事</h2></div></div>
+  <div class="guard-grid">
+    <article><b>同一套 voided urine SOP</b><p>DU/BOO 不因 phenotype 使用不同採尿法。</p></article>
+    <article><b>避免過度 matching</b><p>DU/BOO 的自然 age/menopause distribution 可能不同；不硬配對，改以 age-adjusted sensitivity analysis 檢查主要 signal。</p></article>
+    <article><b>Low-biomass controls 不能省</b><p>總菌量、negative controls、positive mock、batch-aware contamination analysis 是 microbiome 模組的一部分，不是可刪的附加品。</p></article>
+    <article><b>小樣本不做 classifier 表演</b><p>15+15 優先 effect size、precision、FDR 與 reproducible biology；避免 overfitting。</p></article>
+  </div>
+</section>
+</main>
+<footer><p>所有「Official published price」來自臺大醫院公開頁面；「Preliminary estimate」是研究規劃暫估；「Quote required」不得視為正式報價或零成本。</p></footer>
+<script src="vendor/jstat.min.js"></script>
+<script src="app.js?v=20261023a"></script>
 </body>
 </html>
