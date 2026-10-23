@@ -35,6 +35,20 @@ tbody tr:hover { background: #f4f8f7; }
 @media(max-width:900px){.analyte-groups,.pricing-mode{grid-template-columns:1fr}.method-quote{grid-template-columns:1fr 1fr}.method-quote>div:first-child{grid-column:1/-1}}
 @media(max-width:560px){.method-quote{grid-template-columns:1fr}.method-quote>div:first-child{grid-column:auto}}
 
+
+/* v3.3 specimen workflow flowchart */
+.flowchart-wrap{margin:10px 0 18px;padding:16px;border:1px solid var(--line);border-radius:18px;background:#fdfefe;text-align:center}
+.flowchart-image{display:block;width:100%;max-width:1120px;height:auto;margin:0 auto;border-radius:14px;box-shadow:0 10px 28px rgba(24,48,57,.08)}
+.flowchart-fallback{padding:30px;color:var(--muted);background:#f7f9f8;border-radius:12px}
+.flowchart-fallback code{font-family:ui-monospace,Consolas,monospace}
+.workflow-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.workflow-summary article{padding:16px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.workflow-summary h3{margin:6px 0 8px;font-size:.98rem}
+.workflow-summary p{margin:0;color:var(--muted);font-size:.84rem;line-height:1.65}
+.warning-soft{background:#f5f2f7;color:#5e4a62}
+@media(max-width:1000px){.workflow-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.workflow-summary{grid-template-columns:1fr}.flowchart-wrap{padding:8px}}
+
 </style>
 </head>
 <body>
@@ -86,16 +100,59 @@ tbody tr:hover { background: #f4f8f7; }
 </section>
 
 <section class="card" id="biobank">
-  <div class="section-head"><div><p class="kicker">Specimen workflow</p><h2>檢體採集與保存規劃</h2></div></div>
-  <div class="flow-grid">
-    <article><div class="flow-code">U-CLIN</div><h3>Clinical QC aliquot</h3><p>同一泡 clean-catch voided urine：UA/culture/pyuria/hematuria；Cr + SG 或 osmolality 作 normalization。</p></article>
-    <article><div class="flow-code">U-MET</div><h3>Targeted metabolomics</h3><p>Cell-free aliquots，−80°C、避免 freeze–thaw；正式離心速度與 direct-freeze 可否由代謝體核心確認。</p></article>
-    <article><div class="flow-code">U-PUR</div><h3>Purinergic aliquot</h3><p>快速處理/冷凍並記錄 collection-to-freeze time；fresh ATP 只在 pre-analytic pilot 比較，不預設全 cohort 當日測。</p></article>
-    <article><div class="flow-code">U-DNA</div><h3>Microbiome pellet</h3><p>Phase 1 multi-omics module 使用；low-biomass blanks、positive mock、bacterial load 與 batch-aware analysis 必須一起做。</p></article>
-    <article class="pilot-outline"><div class="flow-code">U-FUTURE</div><h3>Future EV / proteomics reserve</h3><p>若尿量允許，另留不經反覆凍融的獨立 aliquot。<b>不先鎖 high-speed pre-clear、穩定劑或 EV isolation</b>；先由 EV/proteomics 核心確認 urine matrix、最小體積與 −80°C 相容性。</p></article>
-    <article><div class="flow-code">V-DNA / V-BANK</div><h3>Vaginal biobank</h3><p>Voided urine 後、lubricant/內診前固定部位 swab；供 Phase 1 16S 或後續 cross-site ecology。</p></article>
+  <div class="section-head">
+    <div>
+      <p class="kicker">Specimen workflow</p>
+      <h2>檢體採集與保存流程</h2>
+    </div>
+    <p class="muted">以下流程圖提供研究助理執行採檢、分裝、保存與樣本庫登錄時參考；實際離心條件、ATP 前處理及 EV/proteomics 相容性仍需由核心平台確認。</p>
   </div>
-  <div class="warning"><b>Flow cytometry 例外：</b>如果未來要看 urinary immune/epithelial cells，必須另訂 fresh urine / fresh-cell processing SOP；現有 frozen cell-free urine 不等價。</div>
+
+  <div class="flowchart-wrap">
+    <img
+      id="specimen-flowchart"
+      src="assets/DU_BOO研究：檢體採集與保存流程.png"
+      alt="DU/BOO 研究檢體採集與保存流程圖"
+      class="flowchart-image"
+    >
+    <div id="flowchart-fallback" class="flowchart-fallback" hidden>
+      <b>流程圖尚未載入。</b><br>
+      請確認圖片已上傳至 GitHub repo 的 <code>assets</code> 資料夾，或與 <code>index.html</code> 放在同一層。
+    </div>
+  </div>
+
+  <div class="workflow-summary">
+    <article>
+      <div class="flow-code">採檢</div>
+      <h3>同一套標準化流程</h3>
+      <p>以 standardized clean-catch voided urine 為 primary specimen；vaginal swab 依研究設計於 lubricant／內診前採集。</p>
+    </article>
+    <article>
+      <div class="flow-code">分裝</div>
+      <h3>依用途分成不同 aliquots</h3>
+      <p>至少區分 targeted metabolomics、purinergic analytes、microbiome／bacterial-load QC、backup，以及尿量允許時的 future EV/proteomics reserve。</p>
+    </article>
+    <article>
+      <div class="flow-code">保存</div>
+      <h3>記錄時間並避免反覆凍融</h3>
+      <p>每管標示 Study ID、採檢時間與用途，記錄 collection-to-freeze time；一般研究 aliquot 以 −80°C 保存。</p>
+    </article>
+    <article>
+      <div class="flow-code">登錄</div>
+      <h3>所有檢體都能追蹤</h3>
+      <p>登錄 freezer、box、位置、aliquot 數量與領用紀錄；不依 DU／BOO phenotype 分盒。</p>
+    </article>
+  </div>
+
+  <div class="warning">
+    <b>採檢前需由核心平台確認：</b>
+    targeted metabolomics 的尿液前處理細節；ATP、NOx、PGE₂、8-OHdG 的穩定性與前分析條件；
+    EV／proteomics 是否需要額外專用 aliquot 或特殊處理；以及 microbiome controls 與 bacterial-load workflow。
+  </div>
+
+  <div class="warning warning-soft">
+    <b>Flow cytometry 例外：</b>若未來要分析 urinary immune／epithelial cells，必須另訂 fresh urine／fresh-cell processing SOP；現有 frozen cell-free urine 不能取代 fresh-cell specimen。
+  </div>
 </section>
 
 <section class="card" id="settings">
@@ -158,5 +215,30 @@ tbody tr:hover { background: #f4f8f7; }
 <footer><p>所有「Official published price」來自臺大醫院公開頁面；「Preliminary estimate」是研究規劃暫估；「Quote required」不得視為正式報價或零成本。</p></footer>
 <script src="vendor/jstat.min.js"></script>
 <script src="app.js?v=20261023c"></script>
+
+<script>
+(function(){
+  const img=document.getElementById('specimen-flowchart');
+  const fallback=document.getElementById('flowchart-fallback');
+  if(!img) return;
+  const candidates=[
+    'assets/DU_BOO研究：檢體採集與保存流程.png',
+    'DU_BOO研究：檢體採集與保存流程.png',
+    'assets/specimen_flowchart.png',
+    'specimen_flowchart.png'
+  ];
+  let i=0;
+  img.onerror=function(){
+    i+=1;
+    if(i<candidates.length){
+      img.src=candidates[i];
+    }else{
+      img.style.display='none';
+      if(fallback) fallback.hidden=false;
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
