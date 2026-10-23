@@ -6,7 +6,36 @@
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
   <meta name="description" content="DU–BOO urodynamics-linked urinary biomarker study planner and NTUH core-facility budget calculator.">
   <title>DU–BOO Study Planner v3</title>
-  <link rel="stylesheet" href="styles_v3.css?v=20261023a">
+  <style>
+:root{--ink:#183039;--muted:#64757b;--bg:#f4f5f1;--panel:#fff;--line:#d7dfdc;--teal:#0b7773;--teal2:#e8f5f2;--blue:#386f98;--blue2:#eaf2f8;--amber:#a8671e;--amber2:#fff3df;--plum:#805a80;--plum2:#f5edf4;--red:#9b3b31;--red2:#faece9;--shadow:0 14px 36px rgba(24,48,57,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif;color:var(--ink);background:radial-gradient(circle at 8% 0%,rgba(11,119,115,.07),transparent 28rem),var(--bg);line-height:1.55}button,input,select{font:inherit}button{cursor:pointer}.hero{display:flex;justify-content:space-between;gap:30px;align-items:flex-end;padding:48px max(24px,calc((100vw - 1380px)/2));color:#f6fffd;background:linear-gradient(125deg,#11333c,#0f625f 62%,#173b4c)}.hero h1{margin:0;font-size:clamp(2.2rem,4vw,4.4rem);line-height:1}.hero p{max-width:920px;margin:18px 0 0;color:#d5eae7;font-size:1.05rem}.eyebrow,.kicker{text-transform:uppercase;letter-spacing:.14em;font-weight:900;font-size:.75rem}.eyebrow{color:#9fe1d9;margin-bottom:10px}.version{padding:12px 16px;border:1px solid rgba(255,255,255,.3);border-radius:14px;text-align:right;font-weight:900}.version span{font-size:.78rem;color:#b7dfda;font-weight:600}main{width:min(1380px,calc(100% - 32px));margin:auto}.card{margin:34px 0;padding:clamp(22px,3vw,40px);background:rgba(255,255,255,.94);border:1px solid rgba(140,160,158,.35);border-radius:26px;box-shadow:var(--shadow)}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;margin-bottom:22px}.section-head h2{margin:0;font-size:clamp(1.45rem,2.2vw,2.1rem);line-height:1.15}.kicker{margin:0 0 7px;color:var(--teal)}.muted{color:var(--muted);max-width:600px}.badge{padding:6px 10px;border-radius:999px;font-size:.72rem;font-weight:900}.badge-fixed{background:var(--teal2);color:#0a5d59}.thesis{padding:20px;border-radius:16px;background:var(--teal2);font-size:1.05rem}.phase-grid,.status-grid,.flow-grid,.guard-grid{display:grid;gap:14px}.phase-grid{grid-template-columns:repeat(3,1fr);margin-top:16px}.phase-grid article,.status-card,.flow-grid article,.guard-grid article{padding:18px;border:1px solid var(--line);border-radius:16px;background:#fff}.phase-grid h3,.status-card h3,.flow-grid h3{margin:8px 0}.phase-grid p,.status-card li,.flow-grid p,.guard-grid p{color:var(--muted);font-size:.88rem}.phase-tag{display:inline-block;padding:4px 8px;border-radius:8px;background:#edf5f3;color:#315b57;font-size:.72rem;font-weight:900}.status-grid{grid-template-columns:repeat(3,1fr)}.status-card ul{padding-left:20px;margin:8px 0}.status-card.fixed{border-top:4px solid var(--teal)}.status-card.pilot{border-top:4px solid var(--amber)}.status-card.future{border-top:4px solid var(--plum)}.flow-grid{grid-template-columns:repeat(3,1fr)}.flow-code{font-size:.73rem;font-weight:900;color:var(--teal);letter-spacing:.08em}.pilot-outline{border-style:dashed!important;border-color:#d3a367!important;background:#fffaf1!important}.warning{margin-top:14px;padding:14px 16px;border-radius:12px;background:var(--amber2);color:#69471d}.preset-row{display:flex;gap:8px;flex-wrap:wrap}.preset-row button,.actions button{border:1px solid var(--line);border-radius:999px;background:#fff;padding:9px 14px;font-weight:850;color:var(--ink)}.preset-row button.active,.preset-row button:hover,.actions button:hover{color:#fff;background:var(--teal);border-color:var(--teal)}.input-grid{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px}.input-grid label{display:grid;gap:6px;padding:14px;border:1px solid #e0e7e4;border-radius:13px;background:#f8faf9;font-size:.82rem;font-weight:850}.input-grid input,.input-grid select,.module-input{width:100%;padding:8px 9px;border:1px solid #cbd7d3;border-radius:9px;background:#fff;color:var(--ink);font-weight:800}.input-grid small{color:var(--muted);font-weight:500}.module-list{display:grid;gap:12px}.module{border:1px solid var(--line);border-radius:17px;background:#fff;overflow:hidden}.module-head{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:17px}.module-check{margin-top:4px;width:20px;height:20px}.module h3{margin:0}.module-sub{margin:4px 0 0;color:var(--muted);font-size:.84rem}.tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.tag{padding:4px 8px;border-radius:999px;font-size:.69rem;font-weight:900}.tag.official{background:var(--teal2);color:#0b615c}.tag.preliminary{background:var(--amber2);color:#7a4d15}.tag.quote{background:var(--red2);color:#7d352d}.tag.phase1{background:var(--blue2);color:#2a5c7c}.tag.future{background:var(--plum2);color:#684b69}.module-body{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;padding:0 17px 17px}.cost-lines{display:grid;gap:7px}.cost-line{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #eef1ef;font-size:.82rem}.cost-line:last-child{border-bottom:0}.cost-line small{color:var(--muted)}.cost-line .price{text-align:right;font-weight:900}.assumptions{padding:12px;border-radius:12px;background:#f7f9f8}.assumptions label{display:grid;gap:5px;margin-bottom:9px;color:var(--muted);font-size:.78rem}.assumptions label:last-child{margin:0}.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric-grid article{min-height:150px;padding:18px;border:1px solid var(--line);border-radius:17px;background:#fff}.metric-grid p{margin:0;color:var(--muted);font-size:.76rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.metric-grid strong{display:block;margin:14px 0 7px;font-size:clamp(1.45rem,2.6vw,2.45rem);line-height:1}.metric-grid span{color:var(--muted);font-size:.78rem}.budget400{background:var(--amber2)!important}.budget1000{background:var(--blue2)!important}.dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.panel,.decision-box{padding:18px;border:1px solid var(--line);border-radius:16px;background:#fff}.panel h3,.decision-box h3{margin:0 0 12px}.breakline{display:grid;grid-template-columns:1fr auto;gap:10px;padding:8px 0;border-bottom:1px solid #edf0ef;font-size:.84rem}.breakline:last-child{border:0}.decision-box{margin-top:14px;background:#fbfcfb}.decision-box p{margin:7px 0;color:#42565d}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;background:#fff;font-size:.78rem}th,td{padding:10px 11px;border-bottom:1px solid #e8ecea;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f0f6f4;color:#34504f;font-size:.72rem}td a{color:var(--teal);font-weight:800}.guard-grid{grid-template-columns:repeat(4,1fr)}.guard-grid article{border-left:4px solid var(--amber)}footer{width:min(1380px,calc(100% - 32px));margin:20px auto 48px;color:var(--muted);font-size:.78rem}.pending{color:var(--red);font-weight:900}.ok{color:var(--teal);font-weight:900}
+@media(max-width:1050px){.input-grid{grid-template-columns:repeat(3,1fr)}.phase-grid,.status-grid,.flow-grid,.guard-grid{grid-template-columns:repeat(2,1fr)}.metric-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.hero,.section-head{flex-direction:column;align-items:flex-start}.version{display:none}.input-grid,.phase-grid,.status-grid,.flow-grid,.guard-grid,.metric-grid,.dashboard-grid,.module-body{grid-template-columns:1fr}.module-head{grid-template-columns:auto 1fr}.tags{grid-column:2;justify-content:flex-start}.card{border-radius:18px}}
+@media print{body{background:#fff}.hero{color:var(--ink);background:#fff;border-bottom:2px solid var(--teal)}.eyebrow,.hero p,.version{color:var(--muted)}.preset-row,.actions,.module-check,.assumptions{display:none!important}.card{box-shadow:none;break-inside:avoid}}
+
+/* v3.1 readability refinements */
+body { font-size: 16px; }
+.card { max-width: 1380px; }
+.card p, .card li { line-height: 1.7; }
+.thesis { line-height: 1.75; }
+.phase-grid article, .status-card, .flow-grid article, .guard-grid article { box-shadow: 0 5px 18px rgba(24,48,57,.035); }
+.phase-grid article:hover, .status-card:hover, .flow-grid article:hover { transform: translateY(-1px); transition: .15s ease; }
+.section-head { padding-bottom: 4px; border-bottom: 1px solid rgba(215,223,220,.65); }
+.status-card h3, .flow-grid h3, .phase-grid h3 { font-size: 1.03rem; }
+.module h3 { font-size: 1rem; }
+.module-sub { line-height: 1.55; }
+.table-wrap { box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); }
+tbody tr:nth-child(even) { background: #fbfcfb; }
+tbody tr:hover { background: #f4f8f7; }
+.actions { display:flex; gap:8px; flex-wrap:wrap; }
+@media(max-width:760px){ body{font-size:15px;} .hero h1{font-size:2.3rem;} }
+
+/* v3.2 metabolite pricing */
+.targeted-module .module-body{display:block}.metab-help{margin:0 17px 17px;padding:14px 16px;border-radius:13px;background:#eef7f5;color:#355c59;font-size:.86rem}.metab-step{margin:16px 17px 0;padding-top:16px;border-top:1px solid #e7ecea}.metab-step:first-of-type{border-top:0;padding-top:0}.metab-step h4{margin:0 0 5px;font-size:1rem}.metab-step>p{margin:0 0 12px;color:var(--muted);font-size:.84rem}.analyte-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.analyte-group{padding:13px;border:1px solid #dfe7e4;border-radius:13px;background:#fafcfb}.analyte-group h5{margin:0 0 4px;font-size:.9rem}.analyte-group .method-note{margin:0 0 10px;color:var(--muted);font-size:.75rem}.analyte-list{display:grid;gap:6px}.analyte-row{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:7px 8px;border-radius:9px;background:#fff;border:1px solid #edf1ef}.analyte-row input{width:17px;height:17px}.analyte-name{font-weight:850;font-size:.84rem}.analyte-role{display:block;color:var(--muted);font-size:.7rem;font-weight:500}.tier-chip{padding:3px 7px;border-radius:999px;font-size:.65rem;font-weight:900;white-space:nowrap}.tier1{background:var(--teal2);color:#0a5d59}.tier2{background:var(--blue2);color:#2d5f7e}.tier3{background:var(--amber2);color:#7a4d15}.futurechip{background:var(--plum2);color:#684b69}.pricing-mode{display:grid;grid-template-columns:minmax(220px,.7fr) 1.3fr;gap:14px;align-items:start}.pricing-mode-box,.method-quotes{padding:13px;border-radius:13px;background:#f7f9f8;border:1px solid #e0e7e4}.pricing-mode-box label,.method-quote label{display:grid;gap:5px;color:var(--muted);font-size:.76rem}.pricing-mode-box select,.method-quote input{width:100%;padding:8px 9px;border:1px solid #cbd7d3;border-radius:9px;background:#fff;color:var(--ink);font-weight:800}.method-quotes{display:grid;gap:9px}.method-quote{display:grid;grid-template-columns:1fr 145px 145px;gap:10px;align-items:end;padding:10px;border-radius:10px;background:#fff;border:1px solid #e8edeb}.method-quote strong{font-size:.83rem}.method-quote small{display:block;color:var(--muted);font-size:.68rem;margin-top:2px}.method-empty{color:var(--muted);font-size:.8rem}.pricing-explain{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--amber2);color:#6a4a20;font-size:.78rem}.metab-cost-summary{margin-top:12px;display:grid;gap:6px}.metab-cost-line{display:grid;grid-template-columns:1fr auto;gap:10px;padding:8px 10px;border-bottom:1px solid #edf1ef;font-size:.8rem}.metab-cost-line:last-child{border-bottom:0}.metab-cost-line b{font-weight:850}.metab-cost-line .price{font-weight:900}.quote-zero-note{margin-top:6px;color:var(--muted);font-size:.72rem}.selected-count{display:inline-block;margin-left:8px;color:var(--teal);font-weight:900;font-size:.8rem}
+@media(max-width:900px){.analyte-groups,.pricing-mode{grid-template-columns:1fr}.method-quote{grid-template-columns:1fr 1fr}.method-quote>div:first-child{grid-column:1/-1}}
+@media(max-width:560px){.method-quote{grid-template-columns:1fr}.method-quote>div:first-child{grid-column:auto}}
+
+</style>
 </head>
 <body>
 <header class="hero">
@@ -15,24 +44,24 @@
     <h1>DU–BOO Study Planner</h1>
     <p>從 standardized voided urine 尋找 detrusor contractile dysfunction biomarkers；把研究規模、院內核心服務、low-biomass QC 與分階段預算放在同一個可調整工具。</p>
   </div>
-  <div class="version">Protocol / Budget v3.0<br><span>Official-price check: 2026-10-23</span></div>
+  <div class="version">Protocol / Budget v3.2<br><span>Official-price check: 2026-10-23 · analyte-level metabolomics</span></div>
 </header>
 
 <main>
 <section class="card" id="scientific-frame">
-  <div class="section-head"><div><p class="kicker">Scientific frame</p><h2>研究主軸不變</h2></div><span class="badge badge-fixed">FIXED PROTOCOL</span></div>
+  <div class="section-head"><div><p class="kicker">Study overview</p><h2>研究目的與整體規劃</h2></div></div>
   <div class="thesis">女性 voiding dysfunction 中，以 UDS adjudication 選出 <b>pure DU</b> 與 <b>pure BOO with preserved detrusor contraction</b>，尋找能反映 <b>detrusor contractile failure</b> 而不是只有 low-flow phenotype 的尿液分子訊號。</div>
   <div class="phase-grid">
-    <article><span class="phase-tag">Phase 1</span><h3>Clinical biomarker discovery</h3><p><b>固定：</b>prospective biobank、UDS phenotype、pure DU 15 vs pure BOO 15、targeted urinary metabolomics。</p><p><b>Phase 1 multi-omics module：</b>urine/vaginal 16S + bacterial-load QC；依核心可行性與資金啟動。</p></article>
+    <article><span class="phase-tag">Phase 1</span><h3>Clinical biomarker discovery</h3><p>Prospective biobank、UDS phenotype、pure DU 15 vs pure BOO 15、targeted urinary metabolomics。</p><p>可依核心可行性與經費加入 urine/vaginal 16S + bacterial-load QC。</p></article>
     <article><span class="phase-tag">Phase 2</span><h3>Extended molecular phenotyping</h3><p>EV-associated miRNA/protein、urinary proteomics、candidate validation、selected-sample WGS。</p></article>
     <article><span class="phase-tag">Phase 3</span><h3>Mechanistic validation</h3><p>Seahorse、bladder smooth muscle cell、Nanolive、BOO/ischemia animal model、fibrosis/contractility。</p></article>
   </div>
 </section>
 
 <section class="card" id="protocol-status">
-  <div class="section-head"><div><p class="kicker">Protocol status</p><h2>哪些現在鎖死、哪些等核心確認</h2></div></div>
+  <div class="section-head"><div><p class="kicker">Study design</p><h2>目前研究設計與待確認項目</h2></div></div>
   <div class="status-grid">
-    <article class="status-card fixed"><h3>Fixed protocol</h3><ul>
+    <article class="status-card fixed"><h3>第一階段確定內容</h3><ul>
       <li>Clean-catch voided urine = primary translational specimen。</li>
       <li>不額外收 research catheterized urine。</li>
       <li>Prospective biobank 先收案，UDS 後 adjudicate pure DU/BOO。</li>
@@ -40,14 +69,14 @@
       <li>不強制 age/menopause matching；保留真實年齡 spectrum，預先做 age-adjusted sensitivity analysis。</li>
       <li>Tier 1 analytes：ATP、NO₂⁻/NO₃⁻、PGE₂、8-OHdG。</li>
     </ul></article>
-    <article class="status-card pilot"><h3>Pilot-dependent</h3><ul>
+    <article class="status-card pilot"><h3>和核心確認後決定</h3><ul>
       <li>ATP fresh vs rapid-freeze/batch assay、stabilizer、recovery、LLOQ。</li>
       <li>尿液 glycolysis/TCA 現成 panel 是否可直接套用或需 matrix validation。</li>
       <li>Tier 2/3 是否可同 method 低成本加入。</li>
       <li>Phase 1 16S：short-read vs full-length、bacterial-load qPCR/ddPCR、controls 數量與 batch design。</li>
       <li>Future-omics aliquot 的 EV/proteomics 前處理與最低體積。</li>
     </ul></article>
-    <article class="status-card future"><h3>Future option</h3><ul>
+    <article class="status-card future"><h3>後續研究方向</h3><ul>
       <li>EV miRNA/protein、proteomics、selected WGS。</li>
       <li>Urinary cell flow cytometry（需 fresh-cell workflow，不能靠目前 frozen supernatant 補救）。</li>
       <li>Seahorse XF Pro、Nanolive、細胞/動物模型。</li>
@@ -57,7 +86,7 @@
 </section>
 
 <section class="card" id="biobank">
-  <div class="section-head"><div><p class="kicker">Biobank SOP</p><h2>保留未來彈性，但不把 Phase 1 做複雜</h2></div></div>
+  <div class="section-head"><div><p class="kicker">Specimen workflow</p><h2>檢體採集與保存規劃</h2></div></div>
   <div class="flow-grid">
     <article><div class="flow-code">U-CLIN</div><h3>Clinical QC aliquot</h3><p>同一泡 clean-catch voided urine：UA/culture/pyuria/hematuria；Cr + SG 或 osmolality 作 normalization。</p></article>
     <article><div class="flow-code">U-MET</div><h3>Targeted metabolomics</h3><p>Cell-free aliquots，−80°C、避免 freeze–thaw；正式離心速度與 direct-freeze 可否由代謝體核心確認。</p></article>
@@ -70,7 +99,7 @@
 </section>
 
 <section class="card" id="settings">
-  <div class="section-head"><div><p class="kicker">Interactive research budget</p><h2>研究規模與 QC 數量</h2></div>
+  <div class="section-head"><div><p class="kicker">Study size</p><h2>研究規模與 QC 數量</h2></div>
     <div class="preset-row"><button data-preset="minimal">Minimal pilot</button><button data-preset="core" class="active">Core multi-omics</button><button data-preset="expanded">Expanded research</button></div>
   </div>
   <div class="input-grid">
@@ -90,34 +119,34 @@
 </section>
 
 <section class="card" id="modules">
-  <div class="section-head"><div><p class="kicker">Assay modules</p><h2>把 sample、run/chip、QC 與待詢價項目拆開</h2></div><p class="muted">勾選模組後，官方費用、暫估與待詢價會分開加總。</p></div>
+  <div class="section-head"><div><p class="kicker">Assays and costs</p><h2>檢驗項目與費用設定</h2></div><p class="muted">代謝物先選「要測什麼」，再依實驗室實際使用的分析方法計價；其他檢驗則拆成 sample、run/chip、QC 與待詢價項目。</p></div>
   <div id="module-list" class="module-list"></div>
 </section>
 
 <section class="card" id="dashboard">
-  <div class="section-head"><div><p class="kicker">Live budget</p><h2>即時研究決策</h2></div><div class="actions"><button id="exportCsv">匯出目前預算 CSV</button><button id="printPlan">列印 / PDF</button></div></div>
+  <div class="section-head"><div><p class="kicker">Budget summary</p><h2>預算總覽</h2></div><div class="actions"><button id="exportCsv">匯出目前預算 CSV</button><button id="printPlan">列印 / PDF</button></div></div>
   <div class="metric-grid">
-    <article><p>Planning total</p><strong id="planningTotal">—</strong><span id="pendingNote">—</span></article>
-    <article><p>Official-price components</p><strong id="officialSubtotal">—</strong><span>只加總可追溯公告單價</span></article>
-    <article><p>Cost / biobank participant</p><strong id="costPerBiobank">—</strong><span>planning total ÷ enrollment</span></article>
-    <article><p>Cost / targeted participant</p><strong id="costPerAnalyzed">—</strong><span>planning total ÷ (DU+BOO)</span></article>
-    <article class="budget400"><p>Under NT$400,000</p><strong id="remain400">—</strong><span id="remain400note">—</span></article>
-    <article class="budget1000"><p>Under NT$1,000,000</p><strong id="remain1000">—</strong><span id="remain1000note">—</span></article>
+    <article><p>目前試算總額</p><strong id="planningTotal">—</strong><span id="pendingNote">—</span></article>
+    <article><p>已有官方公開價格的部分</p><strong id="officialSubtotal">—</strong><span>只加總可追溯公告單價</span></article>
+    <article><p>每位建庫平均成本</p><strong id="costPerBiobank">—</strong><span>planning total ÷ enrollment</span></article>
+    <article><p>每位正式分析平均成本</p><strong id="costPerAnalyzed">—</strong><span>planning total ÷ (DU+BOO)</span></article>
+    <article class="budget400"><p>40 萬元經費餘額</p><strong id="remain400">—</strong><span id="remain400note">—</span></article>
+    <article class="budget1000"><p>100 萬元經費餘額</p><strong id="remain1000">—</strong><span id="remain1000note">—</span></article>
   </div>
   <div class="dashboard-grid">
-    <article class="panel"><h3>Fixed vs variable</h3><div id="fixedVariable"></div></article>
-    <article class="panel"><h3>Breakdown by core / assay</h3><div id="coreBreakdown"></div></article>
+    <article class="panel"><h3>固定成本與隨樣本數變動的成本</h3><div id="fixedVariable"></div></article>
+    <article class="panel"><h3>各核心與檢驗成本</h3><div id="coreBreakdown"></div></article>
   </div>
-  <article class="decision-box"><h3>Decision support</h3><div id="decisionSupport"></div></article>
+  <article class="decision-box"><h3>試算結果怎麼看</h3><div id="decisionSupport"></div></article>
 </section>
 
 <section class="card" id="catalog">
-  <div class="section-head"><div><p class="kicker">Traceable price catalogue</p><h2>臺大醫院核心價格來源</h2></div><p class="muted">查核日 2026-10-23。價格會變動；正式送件仍以核心最新書面報價為準。</p></div>
+  <div class="section-head"><div><p class="kicker">Official price references</p><h2>臺大醫院核心服務與公開價格</h2></div><p class="muted">查核日 2026-10-23。價格會變動；正式送件仍以核心最新書面報價為準。</p></div>
   <div class="table-wrap"><table><thead><tr><th>核心 / 項目</th><th>價格</th><th>單位</th><th>價格狀態</th><th>適用檢體 / 限制</th><th>公告/查核</th><th>來源</th></tr></thead><tbody id="catalogBody"></tbody></table></div>
 </section>
 
 <section class="card" id="safeguards">
-  <div class="section-head"><div><p class="kicker">Bias control</p><h2>不因新技術改變的四件事</h2></div></div>
+  <div class="section-head"><div><p class="kicker">Study quality</p><h2>研究品質控制</h2></div></div>
   <div class="guard-grid">
     <article><b>同一套 voided urine SOP</b><p>DU/BOO 不因 phenotype 使用不同採尿法。</p></article>
     <article><b>避免過度 matching</b><p>DU/BOO 的自然 age/menopause distribution 可能不同；不硬配對，改以 age-adjusted sensitivity analysis 檢查主要 signal。</p></article>
@@ -128,6 +157,6 @@
 </main>
 <footer><p>所有「Official published price」來自臺大醫院公開頁面；「Preliminary estimate」是研究規劃暫估；「Quote required」不得視為正式報價或零成本。</p></footer>
 <script src="vendor/jstat.min.js"></script>
-<script src="app.js?v=20261023a"></script>
+<script src="app.js?v=20261023c"></script>
 </body>
 </html>

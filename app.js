@@ -1,6 +1,6 @@
 const TWD = new Intl.NumberFormat('zh-TW',{style:'currency',currency:'TWD',maximumFractionDigits:0});
 const N = new Intl.NumberFormat('zh-TW',{maximumFractionDigits:0});
-const STORAGE_KEY='duBooPlanner_v3_20261023';
+const STORAGE_KEY='duBooPlanner_v3_2_20261023';
 const CHECKED='2026-10-23';
 
 const URLS={
@@ -45,22 +45,64 @@ const catalog=[
  {core:'免疫研究核心',item:'Nanolive image-analysis module',price:400,unit:'analysis',status:'Official published price',matrix:'cell imaging',published:'page current; version date not shown',url:URLS.nanolive}
 ];
 
+const DEFAULT_METABOLITES={
+ atp:true,adp:false,amp:false,adenosine:false,
+ nitrite:true,nitrate:true,pge2:true,ohdg:true,
+ isoprostane:false,citrulline:false,proline:false,
+ ach:false,choline:false,norepinephrine:false,normetanephrine:false
+};
+const EXPANDED_METABOLITES={...DEFAULT_METABOLITES,adp:true,amp:true,adenosine:true,isoprostane:true,citrulline:true,proline:true};
+
+const metaboliteMethods=[
+ {id:'purine',title:'Purinergic / purine method',note:'ATP 為核心；ADP/AMP/adenosine 若平台可同法併測，再一起加入。',analytes:[
+  {id:'atp',label:'ATP',tier:'Tier 1',role:'purinergic / contractility'},
+  {id:'adp',label:'ADP',tier:'Tier 2',role:'ATP degradation / turnover'},
+  {id:'amp',label:'AMP',tier:'Tier 2',role:'ATP degradation / turnover'},
+  {id:'adenosine',label:'adenosine',tier:'Tier 2',role:'purine turnover'}]},
+ {id:'nox',title:'NOx method',note:'NO₂⁻ + NO₃⁻ 通常一起解讀成 NOx；實際方法由核心確認。',analytes:[
+  {id:'nitrite',label:'NO₂⁻ (nitrite)',tier:'Tier 1',role:'NO pathway'},
+  {id:'nitrate',label:'NO₃⁻ (nitrate)',tier:'Tier 1',role:'NO pathway'}]},
+ {id:'pge2',title:'PGE₂ method',note:'先視為獨立方法；若核心可與其他 lipid mediator 同法，報價時再合併。',analytes:[
+  {id:'pge2',label:'PGE₂',tier:'Tier 1',role:'contractility / remodeling'}]},
+ {id:'ohdg',title:'8-OHdG method',note:'oxidative DNA injury marker；是否與其他 oxidative markers 共用方法需確認。',analytes:[
+  {id:'ohdg',label:'8-OHdG',tier:'Tier 1',role:'oxidative injury / decompensation'}]},
+ {id:'isoprostane',title:'8-isoprostane method',note:'只有平台能低成本併入時才優先加入。',analytes:[
+  {id:'isoprostane',label:'8-isoprostane',tier:'Tier 2',role:'lipid oxidative stress'}]},
+ {id:'arginine',title:'Arginine / remodeling method',note:'探索性候選；不是已驗證的 DU/BOO biomarker。',analytes:[
+  {id:'citrulline',label:'citrulline',tier:'Tier 3',role:'arginine / NO pathway'},
+  {id:'proline',label:'proline',tier:'Tier 3',role:'ECM / remodeling'}]},
+ {id:'cholinergic',title:'Cholinergic method',note:'生理機制合理，但 urinary ACh/choline 尚不是 DU 臨床 biomarker；特殊前處理要先確認。',analytes:[
+  {id:'ach',label:'acetylcholine (ACh)',tier:'Future',role:'parasympathetic / muscarinic signaling'},
+  {id:'choline',label:'choline',tier:'Future',role:'cholinergic-related metabolite'}]},
+ {id:'adrenergic',title:'Adrenergic method',note:'尿液可測，但全身 sympathetic / renal handling 影響大；較適合 BOO subtype 探索。',analytes:[
+  {id:'norepinephrine',label:'norepinephrine',tier:'Future',role:'sympathetic signaling'},
+  {id:'normetanephrine',label:'normetanephrine',tier:'Future',role:'stable catecholamine metabolite'}]}
+];
+
 const state={
  preset:'core',biobankN:60,duN:15,booN:15,urineN:30,vaginaN:30,urineRep:1,vaginaRep:1,negativeControls:8,positiveControls:2,technicalReplicates:4,qcSamples:4,bioinfoHours:20,
  module:{biobank:true,targeted:true,tca:false,short16s:true,nanopore16s:false,pacbio16s:false,bacterialLoad:true,ev:false,proteomics:false,wgs:false,bioinfo:true,seahorse:false,nanolive:false,isolate:false},
- assumption:{biobankPerPerson:1200,preanalyticFixed:50000,tier1Dev:170000,tier1PerSample:4000,tcaUrineExtra:null,microbiomeExtractionPerSample:null,shortLibraryPrep:false,miniSeqMode:'MO300',miniSeqChips:1,nanoporeChips:1,nanoporeFullLengthExtra:null,pacbioPerSample:null,bacterialLoadReagents:null,qPCRRuns:2,ddpcrOilBottles:1,ddpcrCartridgePlates:1,ddpcrPlates:1,ddpcrRuns:1,ddpcrHours:2,evN:10,evNanoHours:4,proteomicsPerSample:null,wgsN:10,wgsPerSample:null,seahorseRuns:1,seahorseProQuote:null,nanoliveDays:1,nanoliveAnalyses:1,isolateStrains:1}
+ metabolites:{...DEFAULT_METABOLITES},
+ assumption:{
+  biobankPerPerson:1200,
+  preanalyticFixed:50000,
+  metabolomicsPricingMode:'envelope',
+  tier1Dev:170000,tier1PerSample:4000,
+  purineDev:null,purinePerSample:null,noxDev:null,noxPerSample:null,pge2Dev:null,pge2PerSample:null,ohdgDev:null,ohdgPerSample:null,isoprostaneDev:null,isoprostanePerSample:null,arginineDev:null,argininePerSample:null,cholinergicDev:null,cholinergicPerSample:null,adrenergicDev:null,adrenergicPerSample:null,
+  tcaUrineExtra:null,microbiomeExtractionPerSample:null,shortLibraryPrep:false,miniSeqMode:'MO300',miniSeqChips:1,nanoporeChips:1,nanoporeFullLengthExtra:null,pacbioPerSample:null,bacterialLoadReagents:null,qPCRRuns:2,ddpcrOilBottles:1,ddpcrCartridgePlates:1,ddpcrPlates:1,ddpcrRuns:1,ddpcrHours:2,evN:10,evNanoHours:4,proteomicsPerSample:null,wgsN:10,wgsPerSample:null,seahorseRuns:1,seahorseProQuote:null,nanoliveDays:1,nanoliveAnalyses:1,isolateStrains:1
+ }
 };
 
 const presets={
- minimal:{module:{biobank:true,targeted:true,tca:false,short16s:false,nanopore16s:false,pacbio16s:false,bacterialLoad:false,ev:false,proteomics:false,wgs:false,bioinfo:true,seahorse:false,nanolive:false,isolate:false},bioinfoHours:10},
- core:{module:{biobank:true,targeted:true,tca:false,short16s:true,nanopore16s:false,pacbio16s:false,bacterialLoad:true,ev:false,proteomics:false,wgs:false,bioinfo:true,seahorse:false,nanolive:false,isolate:false},bioinfoHours:20},
- expanded:{module:{biobank:true,targeted:true,tca:true,short16s:true,nanopore16s:false,pacbio16s:false,bacterialLoad:true,ev:true,proteomics:true,wgs:true,bioinfo:true,seahorse:true,nanolive:true,isolate:false},bioinfoHours:40}
+ minimal:{module:{biobank:true,targeted:true,tca:false,short16s:false,nanopore16s:false,pacbio16s:false,bacterialLoad:false,ev:false,proteomics:false,wgs:false,bioinfo:true,seahorse:false,nanolive:false,isolate:false},metabolites:{...DEFAULT_METABOLITES},bioinfoHours:10},
+ core:{module:{biobank:true,targeted:true,tca:false,short16s:true,nanopore16s:false,pacbio16s:false,bacterialLoad:true,ev:false,proteomics:false,wgs:false,bioinfo:true,seahorse:false,nanolive:false,isolate:false},metabolites:{...DEFAULT_METABOLITES},bioinfoHours:20},
+ expanded:{module:{biobank:true,targeted:true,tca:true,short16s:true,nanopore16s:false,pacbio16s:false,bacterialLoad:true,ev:true,proteomics:true,wgs:true,bioinfo:true,seahorse:true,nanolive:true,isolate:false},metabolites:{...EXPANDED_METABOLITES},bioinfoHours:40}
 };
 
 const modules=[
  {id:'biobank',title:'Prospective biobank / specimen reserve',phase:'Phase 1',status:'Preliminary estimate',desc:'所有 enrollment 先留 standardized voided urine + vaginal biobank；future EV/proteomics reserve 不增加特殊處理，除非核心確認。'},
- {id:'targeted',title:'Tier 1 urinary targeted metabolomics',phase:'Phase 1 fixed',status:'Preliminary estimate',desc:'ATP、NOx、PGE₂、8-OHdG。正式尿液 assay 與 method development 尚待核心書面報價。'},
- {id:'tca',title:'Glycolysis / TCA panel',phase:'Phase 1 pilot-dependent',status:'Official published price',desc:'官方 2,000/sample，但 matrix 列 plasma/serum/cell；尿液 applicability / matrix validation 必須確認。'},
+ {id:'targeted',title:'Urinary targeted metabolomics',phase:'Phase 1',status:'Quote required',desc:'每個 metabolite 可分開勾選；真正預算按分析方法計價，避免把同一套 method 重複收費。'},
+ {id:'tca',title:'Glycolysis / TCA panel',phase:'Phase 1 pilot-dependent',status:'Official published price',desc:'glucose、pyruvate、lactate、citrate、succinate、α-KG、fumarate、malate；官方 2,000/sample，但目前公開 matrix 為 plasma/serum/cell，尿液仍需確認。'},
  {id:'short16s',title:'Short-read 16S V3–V4 (MiniSeq)',phase:'Phase 1 multi-omics',status:'Official published price',desc:'PCR、QC、chip 拆開計價；microbiome DNA extraction 與建庫試劑仍需確認。'},
  {id:'nanopore16s',title:'Full-length 16S – Nanopore',phase:'Phase 1 alternative',status:'Official published price',desc:'官方有 Nanopore multiplex library prep + R10 chip；full-length 16S-specific amplification/reagent workflow 需核心確認。'},
  {id:'pacbio16s',title:'Full-length 16S – PacBio HiFi',phase:'Phase 1 alternative',status:'Quote required',desc:'院內生物資訊可分析 PacBio，但目前查到的公開收費頁未提供 PacBio HiFi sequencing price。'},
@@ -92,9 +134,21 @@ function budgetLines(){
  const a=state.assumption, n=analysisN(), seqN=seqTotalN(); const out=[];
  if(state.module.biobank){out.push(line({module:'Biobank',item:'General collection / cryovials / labels / boxes',core:'Study operations',status:'Preliminary estimate',type:'variable',qty:state.biobankN,assumptionPrice:a.biobankPerPerson,note:'Planning placeholder; not an NTUH core published price'}));}
  if(state.module.targeted){
-  out.push(line({module:'Targeted metabolomics',item:'Pre-analytic feasibility',core:'Metabolomics',status:'Preliminary estimate',type:'fixed',qty:1,assumptionPrice:a.preanalyticFixed,note:'6–8 urine specimens; SOP/matrix feasibility only'}));
-  out.push(line({module:'Targeted metabolomics',item:'Tier 1 method development / standards / QC',core:'Metabolomics',status:'Preliminary estimate',type:'fixed',qty:1,assumptionPrice:a.tier1Dev,note:'Must be replaced by written quote'}));
-  out.push(line({module:'Targeted metabolomics',item:'Tier 1 formal assay',core:'Metabolomics',status:'Preliminary estimate',type:'variable',qty:n,assumptionPrice:a.tier1PerSample,note:'Must be replaced by written quote'}));
+  out.push(line({module:'Targeted metabolomics',item:'Pre-analytic feasibility',core:'Metabolomics',status:'Preliminary estimate',type:'fixed',qty:1,assumptionPrice:a.preanalyticFixed,note:'6–8 urine specimens; only for handling/stability/SOP feasibility'}));
+  if(a.metabolomicsPricingMode==='envelope'){
+   out.push(line({module:'Targeted metabolomics',item:'Temporary method-development envelope',core:'Metabolomics',status:'Preliminary estimate',type:'fixed',qty:1,assumptionPrice:a.tier1Dev,note:'Previous global placeholder; not an analyte-specific quote'}));
+   out.push(line({module:'Targeted metabolomics',item:'Temporary formal-assay envelope',core:'Metabolomics',status:'Preliminary estimate',type:'variable',qty:n,assumptionPrice:a.tier1PerSample,note:'Previous global placeholder; switch to method-level pricing after core quotes'}));
+  }else{
+   metaboliteMethods.forEach(g=>{
+    const active=g.analytes.filter(x=>state.metabolites[x.id]);
+    if(!active.length)return;
+    const dev=a[g.id+'Dev'];
+    const per=a[g.id+'PerSample'];
+    const names=active.map(x=>x.label).join(' + ');
+    out.push(line({module:'Targeted metabolomics',item:`${g.title} – method development (${names})`,core:'Metabolomics',status:'Quote required',type:'fixed',qty:1,assumptionPrice:dev,note:'Enter 0 if the core explicitly includes this in another method quote'}));
+    out.push(line({module:'Targeted metabolomics',item:`${g.title} – formal assay (${names})`,core:'Metabolomics',status:'Quote required',type:'variable',qty:n,assumptionPrice:per,note:'Per analyzed participant; enter 0 only if explicitly included elsewhere'}));
+   });
+  }
  }
  if(state.module.tca){
   out.push(line({module:'TCA panel',item:'Glycolysis/TCA relative quantification',core:'Metabolomics',status:'Official published price',type:'variable',qty:n,unitPrice:2000,assumptionPrice:2000,source:URLS.metabolomics,published:'page current',urineConfirmed:false,note:'Published for plasma/serum/cell; urine validation/quote required'}));
@@ -144,10 +198,31 @@ function budgetLines(){
  return out;
 }
 
+
+function tierClass(t){return t==='Tier 1'?'tier1':t==='Tier 2'?'tier2':t==='Tier 3'?'tier3':'futurechip'}
+function activeAnalytesForMethod(g){return g.analytes.filter(x=>state.metabolites[x.id])}
+function selectedMetaboliteCount(){return Object.values(state.metabolites).filter(Boolean).length}
+function activeMethodCount(){return metaboliteMethods.filter(g=>activeAnalytesForMethod(g).length).length}
+function renderTargetedModule(m,lines){
+ const enabled=state.module.targeted;
+ const a=state.assumption;
+ const costLines=enabled?lines.filter(x=>x.module==='Targeted metabolomics'):[];
+ const analyteHtml=metaboliteMethods.map(g=>`<section class="analyte-group"><h5>${g.title}</h5><p class="method-note">${g.note}</p><div class="analyte-list">${g.analytes.map(x=>`<label class="analyte-row"><input type="checkbox" data-metabolite="${x.id}" ${state.metabolites[x.id]?'checked':''}><span class="analyte-name">${x.label}<span class="analyte-role">${x.role}</span></span><span class="tier-chip ${tierClass(x.tier)}">${x.tier}</span></label>`).join('')}</div></section>`).join('');
+ const methodRows=metaboliteMethods.map(g=>{
+  const active=activeAnalytesForMethod(g); if(!active.length)return '';
+  return `<div class="method-quote"><div><strong>${g.title}</strong><small>目前勾選：${active.map(x=>x.label).join('、')}</small></div><label>方法建立 / 固定費<input data-assumption="${g.id}Dev" type="number" min="0" step="100" value="${a[g.id+'Dev']??''}" placeholder="待詢價"></label><label>每位正式樣本<input data-assumption="${g.id}PerSample" type="number" min="0" step="100" value="${a[g.id+'PerSample']??''}" placeholder="待詢價"></label></div>`;
+ }).join('') || '<div class="method-empty">目前沒有勾選 metabolite。</div>';
+ const pricingBody=a.metabolomicsPricingMode==='envelope'
+  ? `<div class="method-quotes"><div class="method-quote"><div><strong>目前先用原本的總包暫估</strong><small>只是 proposal planning placeholder，不代表任何 analyte 的正式報價。</small></div><label>方法建立暫估<input data-assumption="tier1Dev" type="number" min="0" step="1000" value="${a.tier1Dev??''}"></label><label>每位正式樣本暫估<input data-assumption="tier1PerSample" type="number" min="0" step="100" value="${a.tier1PerSample??''}"></label></div></div>`
+  : `<div class="method-quotes">${methodRows}<div class="quote-zero-note">如果核心明確說某一組 analytes 已包含在另一套 method 的報價裡，該組可填 0；不要在未確認時自行填 0。</div></div>`;
+ const costs=enabled&&costLines.length?costLines.map(x=>`<div class="metab-cost-line"><span><b>${x.item}</b><br><small>${x.status}${x.pending?' · 待補報價':''}</small></span><span class="price">${x.planningUnit==null?'待詢價':`${money(x.planningUnit)} × ${N.format(x.qty)}`}</span></div>`).join(''):'<p class="module-sub">啟用後顯示預算。</p>';
+ return `<article class="module targeted-module"><div class="module-head"><input class="module-check" type="checkbox" data-module="targeted" ${enabled?'checked':''}><div><h3>${m.title}<span class="selected-count">已選 ${selectedMetaboliteCount()} 項 / ${activeMethodCount()} 組 method</span></h3><p class="module-sub">${m.desc}</p></div><div class="tags"><span class="tag quote">Quote required</span><span class="tag phase1">Phase 1</span></div></div>${enabled?`<div class="metab-help"><b>怎麼看：</b>你可以勾很多 metabolite，但實驗室不一定要開同樣多套方法。例如 ATP、ADP、AMP、adenosine 若能同一套 method 併測，預算只算一次方法建立 + 每個樣本一次 assay。</div><div class="metab-step"><h4>1. 要測哪些 metabolite？</h4><p>先選生物學問題；勾選本身不等於「多收一次錢」。真正成本看它落在哪一套分析方法。</p><div class="analyte-groups">${analyteHtml}</div></div><div class="metab-step"><h4>2. 現在用哪種方式估價？</h4><div class="pricing-mode"><div class="pricing-mode-box"><label>估價模式<select data-assumption="metabolomicsPricingMode"><option value="envelope" ${a.metabolomicsPricingMode==='envelope'?'selected':''}>會議前：沿用總包暫估</option><option value="method" ${a.metabolomicsPricingMode==='method'?'selected':''}>拿到報價後：逐方法計價</option></select></label><label style="margin-top:10px">Pre-analytic feasibility 暫估<input data-assumption="preanalyticFixed" type="number" min="0" step="1000" value="${a.preanalyticFixed??''}"></label><div class="pricing-explain">會議前不知道每套方法多少錢時，用「總包暫估」比較誠實；許博士/代謝體核心給你實際報價後，再切到「逐方法計價」。</div></div>${pricingBody}</div></div><div class="metab-step"><h4>3. 目前代謝體預算怎麼算？</h4><div class="metab-cost-summary">${costs}</div></div>`:'<div class="module-body"><p class="module-sub">目前未納入預算。</p></div>'}</article>`;
+}
+
 function assumptionFields(m){
  const a=state.assumption; const input=(key,label,value,step=100)=>`<label>${label}<input class="module-input" data-assumption="${key}" type="number" min="0" step="${step}" value="${value??''}" placeholder="待詢價"></label>`;
  if(m.id==='biobank')return input('biobankPerPerson','一般採檢/保存暫估（每 enrollment）',a.biobankPerPerson);
- if(m.id==='targeted')return input('preanalyticFixed','Pre-analytic feasibility 暫估',a.preanalyticFixed)+input('tier1Dev','Tier 1 method-development 暫估',a.tier1Dev)+input('tier1PerSample','Tier 1 assay 暫估 / targeted sample',a.tier1PerSample);
+ if(m.id==='targeted')return ''; // special renderer handles targeted metabolomics
  if(m.id==='tca')return input('tcaUrineExtra','尿液 matrix-validation 額外暫估',a.tcaUrineExtra);
  if(m.id==='short16s')return `<label>MiniSeq mode<select class="module-input" data-assumption="miniSeqMode"><option value="MO300" ${a.miniSeqMode==='MO300'?'selected':''}>Midi 300 cycles – 32,000/chip</option><option value="HO300" ${a.miniSeqMode==='HO300'?'selected':''}>High Output 300 cycles – 87,000/chip</option></select></label>`+input('miniSeqChips','Chip 數',a.miniSeqChips,1)+input('microbiomeExtractionPerSample','Low-biomass DNA extraction 暫估 / entry',a.microbiomeExtractionPerSample)+`<label><span><input data-assumption="shortLibraryPrep" type="checkbox" ${a.shortLibraryPrep?'checked':''}> 加入 NGS library-prep service 700/sample</span><small>是否適用 16S workflow 需核心確認；建庫試劑另計。</small></label>`;
  if(m.id==='nanopore16s')return input('nanoporeChips','R10 chip 數',a.nanoporeChips,1)+input('nanoporeFullLengthExtra','Full-length 16S PCR/reagent 額外暫估',a.nanoporeFullLengthExtra);
@@ -165,7 +240,8 @@ function assumptionFields(m){
 function renderModules(){
  const lines=budgetLines();
  document.getElementById('module-list').innerHTML=modules.map(m=>{
-  const ml=lines.filter(x=>x.module.toLowerCase().includes(m.id==='short16s'?'short-read':m.id==='nanopore16s'?'nanopore':m.id==='pacbio16s'?'pacbio':m.id==='bacterialLoad'?'bacterial':m.id==='targeted'?'targeted':m.id==='biobank'?'biobank':m.id==='tca'?'tca':m.id==='bioinfo'?'bioinformatics':m.id==='ev'?'ev':m.id==='proteomics'?'proteomics':m.id==='wgs'?'wgs':m.id==='seahorse'?'mechanistic':m.id==='nanolive'?'cell imaging':'microbial'));
+  if(m.id==='targeted')return renderTargetedModule(m,lines);
+  const ml=lines.filter(x=>x.module.toLowerCase().includes(m.id==='short16s'?'short-read':m.id==='nanopore16s'?'nanopore':m.id==='pacbio16s'?'pacbio':m.id==='bacterialLoad'?'bacterial':m.id==='biobank'?'biobank':m.id==='tca'?'tca':m.id==='bioinfo'?'bioinformatics':m.id==='ev'?'ev':m.id==='proteomics'?'proteomics':m.id==='wgs'?'wgs':m.id==='seahorse'?'mechanistic':m.id==='nanolive'?'cell imaging':'microbial'));
   const enabled=state.module[m.id];
   const costHtml=enabled&&ml.length?ml.map(x=>`<div class="cost-line"><span>${x.item}<br><small>${x.status}${x.pending?' · pending/assumption needed':''}</small></span><span class="price">${x.planningUnit==null?'待詢價':`${money(x.planningUnit)} × ${N.format(x.qty)}`}</span></div>`).join(''):'<p class="module-sub">啟用後顯示成本明細。</p>';
   return `<article class="module"><div class="module-head"><input class="module-check" type="checkbox" data-module="${m.id}" ${enabled?'checked':''}><div><h3>${m.title}</h3><p class="module-sub">${m.desc}</p></div><div class="tags"><span class="tag ${statusClass(m.status)}">${m.status}</span><span class="tag ${m.phase.startsWith('Phase 1')?'phase1':'future'}">${m.phase}</span></div></div><div class="module-body"><div class="cost-lines">${costHtml}</div><div class="assumptions">${assumptionFields(m)}</div></div></article>`;
@@ -199,26 +275,28 @@ function renderDashboard(){
  const p=powerFor(1.06,state.duN,state.booN),m=mde80();
  const evIncrement=state.assumption.evN*(800+500)+state.assumption.evNanoHours*300;
  document.getElementById('decisionSupport').innerHTML=`
- <p><b>15+15 pilot：</b>對 d=1.06 的 two-sample t-test power 約 ${(p*100).toFixed(1)}%；80% power MDE 約 d=${m.toFixed(2)}。這是 large-signal discovery，不是 classifier validation。</p>
+ <p><b>代謝體估價：</b>${state.assumption.metabolomicsPricingMode==='envelope'?'目前仍使用「總包暫估」。所以你勾選不同 metabolite 時，總額不會跟著一顆一顆增加；這是故意的，避免在尚未知道實驗室方法前亂算價格。':'目前使用「逐方法計價」。已勾選 '+selectedMetaboliteCount()+' 項 metabolite，分布在 '+activeMethodCount()+' 組分析方法；空白欄位代表仍待核心報價。'}</p>
+ <p><b>15+15 pilot：</b>對 d=1.06 的 two-sample t-test power 約 ${(p*100).toFixed(1)}%；80% power MDE 約 d=${m.toFixed(2)}。這個樣本數主要用來找較大的生物學差異，還不是臨床診斷模型的驗證研究。</p>
  <p><b>只建庫、只分析 30 人：</b>biobank variable cost 依 enrollment=${state.biobankN} 計；targeted/16S assay 依各自 analysis N 計，因此不必把全部 banked samples 都送檢。</p>
  <p><b>Short-read vs Nanopore：</b>依目前可直接追溯的 published components、${seqN} sequencing entries 計，short-read 約 ${money(shortKnown)}，Nanopore 約 ${money(nanoKnown)}，差額 ${delta>=0?'Nanopore 多 ':'Nanopore 少 '}${money(Math.abs(delta))}。兩者都還有 workflow-specific pending costs，這不是完整報價。</p>
  <p><b>EV 第二階段：</b>若先做 ${state.assumption.evN} 件 SEC + NTA、nano-flow ${state.assumption.evNanoHours} 小時，官方單價參考的增量約 ${money(evIncrement)}；但 urine applicability / recovery 必須先確認，所以不可當正式預算。</p>
- <p><b>40 萬決策：</b>${planning<=400000?'目前 planning total 在 40 萬內，但仍需處理 pending quotes。':'目前 planning total 已超過 40 萬；優先保留 UDS + 15+15 targeted metabolomics，16S/EV/WGS 依 Phase 1 multi-omics 或後續經費分開啟動。'}</p>`;
+ <p><b>40 萬經費：</b>${planning<=400000?'目前 planning total 在 40 萬內，但仍需處理 pending quotes。':'目前 planning total 已超過 40 萬；優先保留 UDS + 15+15 targeted metabolomics，16S/EV/WGS 依 Phase 1 multi-omics 或後續經費分開啟動。'}</p>`;
 }
 
 function syncInputs(){['biobankN','duN','booN','urineN','vaginaN','urineRep','vaginaRep','negativeControls','positiveControls','technicalReplicates','qcSamples','bioinfoHours'].forEach(id=>document.getElementById(id).value=state[id]);document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('active',b.dataset.preset===state.preset));}
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
-function load(){const raw=localStorage.getItem(STORAGE_KEY);if(raw){try{const s=JSON.parse(raw);Object.assign(state,s);state.module={...state.module,...s.module};state.assumption={...state.assumption,...s.assumption}}catch(e){}}}
+function load(){const raw=localStorage.getItem(STORAGE_KEY);if(raw){try{const s=JSON.parse(raw);Object.assign(state,s);state.module={...state.module,...s.module};state.metabolites={...DEFAULT_METABOLITES,...s.metabolites};state.assumption={...state.assumption,...s.assumption}}catch(e){}}}
 function render(){syncInputs();renderModules();renderCatalog();renderDashboard();bindDynamic();save();}
 function bindDynamic(){
  document.querySelectorAll('[data-module]').forEach(el=>el.onchange=()=>{state.module[el.dataset.module]=el.checked;state.preset='custom';render()});
+ document.querySelectorAll('[data-metabolite]').forEach(el=>el.onchange=()=>{state.metabolites[el.dataset.metabolite]=el.checked;state.preset='custom';render()});
  document.querySelectorAll('[data-assumption]').forEach(el=>el.onchange=()=>{const k=el.dataset.assumption;if(el.type==='checkbox')state.assumption[k]=el.checked;else if(el.tagName==='SELECT')state.assumption[k]=el.value;else state.assumption[k]=parseMaybe(el.value);render()});
 }
 function bind(){
  ['biobankN','duN','booN','urineN','vaginaN','urineRep','vaginaRep','negativeControls','positiveControls','technicalReplicates','qcSamples','bioinfoHours'].forEach(id=>document.getElementById(id).onchange=e=>{state[id]=Math.max(0,Number(e.target.value)||0);render()});
- document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{const p=presets[b.dataset.preset];state.preset=b.dataset.preset;state.module={...state.module,...p.module};if(p.bioinfoHours!=null)state.bioinfoHours=p.bioinfoHours;render()});
+ document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{const p=presets[b.dataset.preset];state.preset=b.dataset.preset;state.module={...state.module,...p.module};if(p.metabolites)state.metabolites={...p.metabolites};if(p.bioinfoHours!=null)state.bioinfoHours=p.bioinfoHours;render()});
  document.getElementById('printPlan').onclick=()=>window.print();document.getElementById('exportCsv').onclick=exportCsv;
 }
 function csv(v){const s=String(v??'');return `"${s.replaceAll('"','""')}"`}
-function exportCsv(){const rows=[['Module','Item','Core','Price_status','Type','Quantity','Planning_unit_price_NTD','Planning_cost_NTD','Official_published_component_cost_NTD','Pending_quote','Source','Note','Checked_date']];budgetLines().forEach(x=>rows.push([x.module,x.item,x.core,x.status,x.type,x.qty,x.planningUnit??'',x.planningCost,x.officialCost,x.pending?'YES':'NO',x.source,x.note,CHECKED]));const blob=new Blob(['\ufeff'+rows.map(r=>r.map(csv).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`DU_BOO_budget_${CHECKED}.csv`;a.click();URL.revokeObjectURL(a.href)}
+function exportCsv(){const rows=[['Module','Item','Core','Price_status','Type','Quantity','Planning_unit_price_NTD','Planning_cost_NTD','Official_published_component_cost_NTD','Pending_quote','Source','Note','Checked_date'],['Targeted metabolomics','Selected analytes','','','','','','','','','',Object.entries(state.metabolites).filter(([k,v])=>v).map(([k])=>k).join('; '),CHECKED],['Targeted metabolomics','Pricing mode','','','','','','','','','',state.assumption.metabolomicsPricingMode,CHECKED]];budgetLines().forEach(x=>rows.push([x.module,x.item,x.core,x.status,x.type,x.qty,x.planningUnit??'',x.planningCost,x.officialCost,x.pending?'YES':'NO',x.source,x.note,CHECKED]));const blob=new Blob(['\ufeff'+rows.map(r=>r.map(csv).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`DU_BOO_budget_${CHECKED}.csv`;a.click();URL.revokeObjectURL(a.href)}
 load();bind();render();
